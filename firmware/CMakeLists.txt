@@ -1,35 +1,28 @@
-# == DO NEVER EDIT THE NEXT LINES for Raspberry Pi Pico VS Code Extension to work ==
-if(WIN32)
-   set(USERHOME $ENV{USERPROFILE})
-else()
-    set(USERHOME $ENV{HOME})
-endif()
-set(PICO_SDK_PATH ${USERHOME}/.pico-sdk/sdk/1.5.1)
-set(PICO_TOOLCHAIN_PATH ${USERHOME}/.pico-sdk/toolchain/13_2_Rel1)
-if(WIN32)
-    set(pico-sdk-tools_DIR ${USERHOME}/.pico-sdk/tools/1.5.1)
-    include(${pico-sdk-tools_DIR}/pico-sdk-tools-config.cmake)
-    include(${pico-sdk-tools_DIR}/pico-sdk-tools-config-version.cmake)
-endif()
-# ====================================================================================
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.12)
 
-# Pull in PICO SDK (must be before project)
+# Pull in SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(blink C CXX ASM)
+project(tusb_keyboard C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
-set(PICO_EXAMPLES_PATH ${PROJECT_SOURCE_DIR})
+if (PICO_SDK_VERSION_STRING VERSION_LESS "1.3.0")
+    message(FATAL_ERROR "Raspberry Pi Pico SDK version 1.3.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
+endif()
 
+set(FAMILY rp2040)
+set(BOARD pico_sdk)
+set(TINYUSB_FAMILY_PROJECT_NAME_PREFIX "tinyusb_dev_")
+
+# Initialize the SDK
 pico_sdk_init()
 
-add_executable(blink
-  blink.cpp
-  )
+add_compile_options(-Wall
+    -Wno-format          # int != int32_t as far as the compiler is concerned because gcc has int32_t as long int
+    -Wno-unused-function # we have some for the docs that aren't called
+    -Wno-maybe-uninitialized
+)
 
-pico_enable_stdio_usb(blink 1)
-pico_enable_stdio_uart(blink 1)
-pico_add_extra_outputs(blink)
-target_link_libraries(blink pico_stdlib)
+# Keyboard src
+add_subdirectory(src)
