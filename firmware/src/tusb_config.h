@@ -27,8 +27,7 @@
 #define _TUSB_CONFIG_H_
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 //--------------------------------------------------------------------
@@ -46,10 +45,12 @@ extern "C"
 #endif
 
 // RHPort max operational speed can defined by board.mk
-// Default to Highspeed for MCU with internal HighSpeed PHY (can be port specific), otherwise FullSpeed
+// Default to Highspeed for MCU with internal HighSpeed PHY (can be port
+// specific), otherwise FullSpeed
 #ifndef BOARD_DEVICE_RHPORT_SPEED
-#if (CFG_TUSB_MCU == OPT_MCU_LPC18XX || CFG_TUSB_MCU == OPT_MCU_LPC43XX || CFG_TUSB_MCU == OPT_MCU_MIMXRT10XX || \
-     CFG_TUSB_MCU == OPT_MCU_NUC505 || CFG_TUSB_MCU == OPT_MCU_CXD56 || CFG_TUSB_MCU == OPT_MCU_SAMX7X)
+#if (CFG_TUSB_MCU == OPT_MCU_LPC18XX || CFG_TUSB_MCU == OPT_MCU_LPC43XX ||     \
+     CFG_TUSB_MCU == OPT_MCU_MIMXRT10XX || CFG_TUSB_MCU == OPT_MCU_NUC505 ||   \
+     CFG_TUSB_MCU == OPT_MCU_CXD56 || CFG_TUSB_MCU == OPT_MCU_SAMX7X)
 #define BOARD_DEVICE_RHPORT_SPEED OPT_MODE_HIGH_SPEED
 #else
 #define BOARD_DEVICE_RHPORT_SPEED OPT_MODE_FULL_SPEED
@@ -72,10 +73,9 @@ extern "C"
 // CFG_TUSB_DEBUG is defined by compiler in DEBUG build
 // #define CFG_TUSB_DEBUG           0
 
-/* USB DMA on some MCUs can only access a specific SRAM region with restriction on alignment.
- * Tinyusb use follows macros to declare transferring memory so that they can be put
- * into those specific section.
- * e.g
+/* USB DMA on some MCUs can only access a specific SRAM region with restriction
+ * on alignment. Tinyusb use follows macros to declare transferring memory so
+ * that they can be put into those specific section. e.g
  * - CFG_TUSB_MEM SECTION : __attribute__ (( section(".usb_ram") ))
  * - CFG_TUSB_MEM_ALIGN   : __attribute__ ((aligned(4)))
  */
@@ -87,9 +87,9 @@ extern "C"
 #define CFG_TUSB_MEM_ALIGN __attribute__((aligned(4)))
 #endif
 
-    //--------------------------------------------------------------------
-    // DEVICE CONFIGURATION
-    //--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// DEVICE CONFIGURATION
+//--------------------------------------------------------------------
 
 #ifndef CFG_TUD_ENDPOINT0_SIZE
 #define CFG_TUD_ENDPOINT0_SIZE 64
