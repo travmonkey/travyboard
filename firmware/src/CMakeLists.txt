@@ -4,6 +4,7 @@ add_executable(master)
 
 target_sources(master PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/master/master.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/rotary_encoder/encoder.cpp
     ${CMAKE_CURRENT_LIST_DIR}/tusb/usb_descriptors.c
 )
 
