@@ -29,14 +29,26 @@ fi
 
 echo "Pico found:"
 sudo mount /dev/"$device"1 /home/travis/rpi-pico
-
 echo "Device $device mounted at /home/travis/rpi-pico/"
-echo "Copying over the built file"
 
-
-for file in ./src/*.uf2; do
-  sudo cp "$file" /home/travis/rpi-pico/
-  echo "File $file copied to /home/travis/rpi-pico/"
+while true; do
+  echo "Flashing Master(1) or Slave(2)? (q to quit)"
+  read -r pico
+  if [ "$pico" = "1" ]; then
+    echo 'Flashing Master to connected Pico'
+    sudo cp ./src/master.uf2 /home/travis/rpi-pico/
+    break
+  elif [ "$pico" = "2" ]; then
+    echo "Flashing Slave to connected Pico"
+    sudo cp ./src/slave.uf2 /home/travis/rpi-pico/
+    break
+  elif [ "$pico" = "q" ]; then
+    echo "Exiting"
+    exit
+  else
+    echo "Incorrect choice. Try again."
+    sleep 1
+  fi
 done
 
 echo "Completed mounting and flashing Pico"
