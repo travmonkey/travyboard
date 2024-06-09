@@ -36,6 +36,7 @@
 #include "pico/time.h"
 #include "tusb.h"
 
+#include "../rotary_encoder/encoder.cpp"
 #include "keyboard.h"
 #include "usb_descriptors.h"
 
@@ -76,18 +77,25 @@ int main(void) {
   setup();
   board_init();
   tusb_init();
+  init_encoder();
 
   gpio_init(0);
   gpio_set_dir(0, GPIO_OUT);
+  gpio_put(0, false);
 
-  while (1) {
+  while (true) {
     tud_task(); // tinyusb device task
-
-    gpio_put(0, 0);
 
     led_blinking_task();
     scanButtons();
     // hid_task(); // keyboard implementation
+    if (encoder_pos > 0) {
+      gpio_put(0, true); // Turn on the LED if rotating in one
+      encoder_pos = 0;   // Reset encoder position
+    } else if (encoder_pos < 0) {
+      gpio_put(0, false);
+      encoder_pos = 0; // Reset encoder position
+    }
   }
 
   return 0;
