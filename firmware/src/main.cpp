@@ -23,15 +23,29 @@
  *
  */
 
+#include <cstdint>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "bsp/board.h"
+#include "class/hid/hid.h"
+#include "class/hid/hid_device.h"
+#include "hardware/gpio.h"
+#include "hardware/timer.h"
+#include "pico/time.h"
 #include "tusb.h"
 
 #include "keyboard.h"
 #include "usb_descriptors.h"
+
+#define ROW_1 14
+#define ROW_2 15
+#define COLUMN_1 11
+#define COLUMN_2 12
+#define COLUMN_3 13
+
+#define DEBOUNCE_TIME 15
 
 //--------------------------------------------------------------------+
 // MACRO CONSTANT TYPEDEF PROTYPES
@@ -45,22 +59,35 @@ enum {
 };
 
 static uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
+static uint8_t current_keys[6] = {0};
 
 void led_blinking_task(void);
 void hid_task(void);
+
+void setup(void);
+void scanButtons(void);
+void handleButtonPress();
+void send_key(bool keys_pressed, uint8_t key);
 
 KeyBoard keyboard;
 
 /*------------- MAIN -------------*/
 int main(void) {
+  setup();
   board_init();
   tusb_init();
+
+  gpio_init(0);
+  gpio_set_dir(0, GPIO_OUT);
 
   while (1) {
     tud_task(); // tinyusb device task
 
+    gpio_put(0, 0);
+
     led_blinking_task();
-    hid_task(); // keyboard implementation
+    scanButtons();
+    // hid_task(); // keyboard implementation
   }
 
   return 0;
@@ -69,6 +96,127 @@ int main(void) {
 //--------------------------------------------------------------------+
 // USB HID
 //--------------------------------------------------------------------+
+
+void setup(void) {
+  // Initialize the row pins as the output
+  gpio_init(ROW_1);
+  gpio_set_dir(ROW_1, GPIO_OUT);
+  gpio_init(ROW_2);
+  gpio_set_dir(ROW_2, GPIO_OUT);
+
+  // Initialize the column pins as the input, and pull them down
+  gpio_init(COLUMN_1);
+  gpio_set_dir(COLUMN_1, GPIO_IN);
+  gpio_pull_down(COLUMN_1);
+
+  gpio_init(COLUMN_2);
+  gpio_set_dir(COLUMN_2, GPIO_IN);
+  gpio_pull_down(COLUMN_2);
+
+  gpio_init(COLUMN_3);
+  gpio_set_dir(COLUMN_3, GPIO_IN);
+  gpio_pull_down(COLUMN_3);
+}
+
+void scanButtons(void) {
+  // Poll every 1ms
+  const uint32_t interval_ms = 1;
+  static uint32_t start_ms = 0;
+
+  if (board_millis() - start_ms < interval_ms) {
+    return; // not enough time
+  }
+  start_ms += interval_ms;
+
+  for (size_t i = 0; i < 6; i++) {
+    current_keys[i] = 0;
+  }
+
+  // Define the total amount of keys pressed. This is a max of 6
+  int total_keys = 0;
+
+  // Start scanning row 1
+  gpio_put(ROW_1, 1);
+  sleep_us(1); // Small delay for accuracy
+  // Check each column for changes
+  if (gpio_get(COLUMN_1) && total_keys < 6) {
+    current_keys[total_keys] = HID_KEY_1;
+    total_keys += 1;
+  }
+  if (gpio_get(COLUMN_2)) {
+    current_keys[total_keys] = HID_KEY_ALT_LEFT;
+    total_keys += 1;
+  }
+  if (gpio_get(COLUMN_3)) {
+    current_keys[total_keys] = HID_KEY_2;
+    total_keys += 1;
+  }
+  // Stop scanning row 1
+  gpio_put(ROW_1, 0);
+
+  // Start scanning row 2
+  gpio_put(ROW_2, 1);
+  sleep_us(1); // Small delay for accuracy
+  // Check each column for changes
+  if (gpio_get(COLUMN_1)) {
+    current_keys[total_keys] = HID_KEY_A;
+    total_keys += 1;
+  }
+  if (gpio_get(COLUMN_2)) {
+    current_keys[total_keys] = HID_KEY_S;
+    total_keys += 1;
+  }
+  if (gpio_get(COLUMN_3)) {
+    current_keys[total_keys] = HID_KEY_D;
+    total_keys += 1;
+  }
+  // Stop scanning row 2
+  gpio_put(ROW_2, 0);
+  handleButtonPress();
+}
+
+static void send_key(bool keys_pressed, uint8_t keys[6]) {
+  // skip if hid is not ready yet
+  if (!tud_hid_ready()) {
+    return;
+  }
+
+  // avoid sending multiple zero reports
+  static bool send_empty = false;
+
+  if (keys_pressed) {
+    tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, keys);
+    send_empty = true;
+  } else {
+    // send empty key report if previously has key pressed
+    if (send_empty) {
+      tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, NULL);
+    }
+    send_empty = false;
+  }
+}
+
+void handleButtonPress() {
+  // Handle debouncing
+  static uint64_t lastPressTime = 0;
+  uint64_t currentTime = time_us_64();
+
+  if (currentTime - lastPressTime < DEBOUNCE_TIME) {
+    return;
+  }
+  lastPressTime = currentTime;
+
+  // Check if either row is recieving input
+  static uint8_t input_pins[2] = {14, 15};
+  for (size_t i = 0; i < 2; i++) {
+    if (gpio_get(input_pins[i]) == 0) {
+      // Send list of keys pressed
+      send_key(true, current_keys);
+    } else {
+      send_key(false, current_keys);
+    }
+  }
+}
 
 static void send_hid_report(bool keys_pressed) {
   // skip if hid is not ready yet

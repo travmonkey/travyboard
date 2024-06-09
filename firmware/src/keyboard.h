@@ -34,12 +34,12 @@ private:
       {9, HID_KEY_F},             // right (left stick)
       {10, HID_KEY_I},            // up (right stick)
       {11, HID_KEY_K},            // down (right stick)
-      {14, HID_KEY_J},            // left (right stick)
+      {17, HID_KEY_J},            // left (right stick)
       {12, HID_KEY_L},            // right (right stick)
       {13, HID_KEY_CONTROL_LEFT}, // button 1
       {15, HID_KEY_ALT_LEFT},     // button 2
       {16, HID_KEY_SPACE},        // button 3
-      {17, HID_KEY_SHIFT_LEFT},   // button 4
+      {14, HID_KEY_SHIFT_LEFT},   // button 4
       {18, HID_KEY_Z},            // button 5
       {19, HID_KEY_X},            // button 6
       {20, HID_KEY_C},            // button 7
