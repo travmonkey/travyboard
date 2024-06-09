@@ -32,7 +32,7 @@
 #include "tusb.h"
 
 #include "encoder.hpp"
-#include "keyboard.h"
+#include "keyboard.hpp"
 #include "usb_descriptors.h"
 
 #define ROW_1 14
