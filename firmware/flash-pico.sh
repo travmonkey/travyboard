@@ -12,9 +12,11 @@ if cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..; then
     echo "Project built successfully"
   else
     echo "Make failed, check the configuration and logs"
+    exit
   fi
 else
   echo "Cmake failed, check the configuration and logs"
+  exit
 fi
 
 # Find the device with the specified disk name
