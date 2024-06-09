@@ -36,7 +36,7 @@
 #include "pico/time.h"
 #include "tusb.h"
 
-#include "keyboard.h"
+#include "keyboard.hpp"
 #include "usb_descriptors.h"
 
 #define ROW_1 14
