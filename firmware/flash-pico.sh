@@ -27,7 +27,7 @@ if [ -z "$device" ]; then
   exit 1
 fi
 
-echo "Pico found: Enter password to continue."
+echo "Pico found:"
 sudo mount /dev/"$device"1 /home/travis/rpi-pico
 
 echo "Device $device mounted at /home/travis/rpi-pico/"
