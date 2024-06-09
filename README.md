@@ -14,25 +14,25 @@ Raspberry Pi Pico microcontroller in c++.
 ### Setup
 
 1. Clone the Pico SDK and update the submodules
-```bash
+```sh
 git clone https://github.com/raspberrypi/pico-sdk.git
 cd pico-sdk
 git submodule update --init
 ```
 
 2. Set an environment variable so cmake can find the sdk
-```bash
+```sh
 export PICO_SDK_PATH=`<pico sdk path>`
 ```
 
 3. Clone this repository:
-```bash
+```sh
 git clone https://github.com/travmonkey/travyboard.git
 cd travyboard
 ```
 
 4. Create build folder and build the project:
-```bash
+```sh
 cd firmware
 mkdir build && cd build
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .. # Export the compile commands for clangd to see
@@ -40,7 +40,7 @@ make
 ```
 
 5. Mount and flash both picos with the master and slave compiled .uf2 code.
-```bash
+```sh
 mkdir ~/rpi-pico
 sudo fdisk -l # Find the pico device
 sudo mount /dev/sdx1 /home/`<user>`/rpi-pico
