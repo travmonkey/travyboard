@@ -1,4 +1,4 @@
-23822181356925307
+23823938993212988
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -96431,13 +96431,20 @@ Varistor VF
 0
 2
 2
+audio-jacks
+PJ-399B-6A
+
+usb usb-c 2.0 pd
+0
+6
+3
 encoders
 PEC12R-2120F-S0012
 
 
 0
-1
-1
+5
+5
 encoders
 PEC12R-4220F-20024
 

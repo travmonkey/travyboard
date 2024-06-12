@@ -4,4 +4,6 @@
   (lib (name "keyswitches.pretty-2.1")(type "KiCad")(uri "${KIPRJMOD}/symbols/keyswitches.pretty-2.1")(options "")(descr ""))
   (lib (name "kbd")(type "KiCad")(uri "${KIPRJMOD}/symbols/kbd-3-final/kicad-footprints/kbd.pretty")(options "")(descr ""))
   (lib (name "encoders")(type "KiCad")(uri "${KIPRJMOD}/symbols/encoders.pretty")(options "")(descr ""))
+  (lib (name "Library")(type "KiCad")(uri "${KIPRJMOD}/symbols/Library.pretty")(options "")(descr ""))
+  (lib (name "audio-jacks")(type "KiCad")(uri "${KIPRJMOD}/symbols/audio-jacks.pretty")(options "")(descr ""))
 )

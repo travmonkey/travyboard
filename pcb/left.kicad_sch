@@ -8,6 +8,188 @@
 		(title "travyboard left")
 	)
 	(lib_symbols
+		(symbol "Connector_Audio:AudioJack3"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 0 8.89 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "AudioJack3"
+				(at 0 6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Audio Jack, 3 Poles (Stereo / TRS)"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "audio jack receptacle stereo headphones phones TRS connector"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Jack*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "AudioJack3_0_1"
+				(rectangle
+					(start -5.08 -5.08)
+					(end -6.35 -2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -2.54) (xy 0.635 -3.175) (xy 1.27 -2.54) (xy 2.54 -2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.905 -2.54) (xy -1.27 -3.175) (xy -0.635 -2.54) (xy -0.635 0) (xy 2.54 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 2.54) (xy -2.54 2.54) (xy -2.54 -2.54) (xy -3.175 -3.175) (xy -3.81 -2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start 2.54 3.81)
+					(end -5.08 -5.08)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "AudioJack3_1_1"
+				(pin passive line
+					(at 5.08 0 180)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "R"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 2.54 180)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "S"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 -2.54 180)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "T"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "Device:RotaryEncoder_Switch"
 			(pin_names
 				(offset 0.254) hide)
@@ -2429,6 +2611,16 @@
 	)
 	(wire
 		(pts
+			(xy 81.28 104.14) (xy 82.55 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1a964696-f5c5-4127-b9e0-d405c6801458")
+	)
+	(wire
+		(pts
 			(xy 44.45 138.43) (xy 45.72 138.43)
 		)
 		(stroke
@@ -2546,6 +2738,16 @@
 			(type default)
 		)
 		(uuid "1f562435-9de7-4cd8-9e65-b0bed20d03fc")
+	)
+	(wire
+		(pts
+			(xy 21.59 76.2) (xy 22.86 76.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1f92f53f-6b83-41cf-a47c-220ad4da90a5")
 	)
 	(wire
 		(pts
@@ -2739,6 +2941,16 @@
 	)
 	(wire
 		(pts
+			(xy 45.72 99.06) (xy 45.72 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "34246689-9376-41f5-857f-c96698bafae9")
+	)
+	(wire
+		(pts
 			(xy 191.77 116.84) (xy 199.39 116.84)
 		)
 		(stroke
@@ -2756,6 +2968,16 @@
 			(type default)
 		)
 		(uuid "34d46c24-6054-4503-807c-e2701dac5658")
+	)
+	(wire
+		(pts
+			(xy 21.59 73.66) (xy 22.86 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "38217b2e-19fc-422c-b51d-b3daed71bcc1")
 	)
 	(wire
 		(pts
@@ -2799,6 +3021,16 @@
 	)
 	(wire
 		(pts
+			(xy 81.28 101.6) (xy 82.55 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3d694948-785d-4cee-a6ea-2a122cb69ad0")
+	)
+	(wire
+		(pts
 			(xy 115.57 22.86) (xy 115.57 25.4)
 		)
 		(stroke
@@ -2829,13 +3061,13 @@
 	)
 	(wire
 		(pts
-			(xy 68.58 60.96) (xy 69.85 60.96)
+			(xy 68.58 71.12) (xy 69.85 71.12)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "42669c49-e562-42f1-95fa-fba553ee9318")
+		(uuid "4149d3da-7c6a-419d-84ad-72f595effb3a")
 	)
 	(wire
 		(pts
@@ -3059,16 +3291,6 @@
 	)
 	(wire
 		(pts
-			(xy 68.58 81.28) (xy 71.12 81.28)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "658a28a5-a1cb-4f92-8709-5bc18eae1e97")
-	)
-	(wire
-		(pts
 			(xy 40.64 140.97) (xy 45.72 140.97)
 		)
 		(stroke
@@ -3216,6 +3438,16 @@
 			(type default)
 		)
 		(uuid "702475be-7741-46c2-8802-158e422d2174")
+	)
+	(wire
+		(pts
+			(xy 68.58 73.66) (xy 69.85 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "70b0a911-995f-4c76-b821-c2237ff68cab")
 	)
 	(wire
 		(pts
@@ -3396,6 +3628,16 @@
 			(type default)
 		)
 		(uuid "875084f6-350b-4d4c-ae74-bed4da92c815")
+	)
+	(wire
+		(pts
+			(xy 21.59 71.12) (xy 22.86 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "87cae7a8-f5fa-41b3-a9b6-c222ae989ca4")
 	)
 	(wire
 		(pts
@@ -4039,6 +4281,16 @@
 	)
 	(wire
 		(pts
+			(xy 21.59 38.1) (xy 22.86 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d4fc4d35-791f-483b-a374-c65e0a74fd75")
+	)
+	(wire
+		(pts
 			(xy 199.39 71.12) (xy 222.25 71.12)
 		)
 		(stroke
@@ -4066,6 +4318,16 @@
 			(type default)
 		)
 		(uuid "d7f2ce91-f886-4583-b829-77febc04d317")
+	)
+	(wire
+		(pts
+			(xy 21.59 40.64) (xy 22.86 40.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d8a423e5-45ab-4076-a7f3-afa6ee4eea4a")
 	)
 	(wire
 		(pts
@@ -4309,6 +4571,26 @@
 	)
 	(wire
 		(pts
+			(xy 81.28 106.68) (xy 82.55 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f10dbf6a-b988-4eb4-9283-e44c4b3d0723")
+	)
+	(wire
+		(pts
+			(xy 68.58 48.26) (xy 69.85 48.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f3bcda86-beaf-4857-bdba-3fe5f2f1751d")
+	)
+	(wire
+		(pts
 			(xy 44.45 119.38) (xy 45.72 119.38)
 		)
 		(stroke
@@ -4423,7 +4705,7 @@
 		(uuid "06ed0206-9a76-4e3b-9d4f-273851e54ee0")
 	)
 	(label "ENCODER1_SW"
-		(at 71.12 67.31 0)
+		(at 69.85 73.66 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -4489,13 +4771,13 @@
 		(uuid "1b021338-6de6-42ab-b80a-a32173af0e89")
 	)
 	(label "ENCODER2_CLK"
-		(at 71.12 72.39 0)
+		(at 21.59 71.12 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
 		(uuid "1d21f960-870c-4503-b430-0614bfeb7a09")
 	)
@@ -4510,6 +4792,17 @@
 		)
 		(uuid "22868e94-e728-4f7f-a395-afcc5d3779f6")
 	)
+	(label "UART0_RX"
+		(at 21.59 40.64 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "2424f354-95af-4a9c-a7f5-bea69835cbc4")
+	)
 	(label "GND"
 		(at 191.77 116.84 0)
 		(fields_autoplaced yes)
@@ -4520,6 +4813,17 @@
 			(justify left bottom)
 		)
 		(uuid "243c38f3-8523-4121-9e77-b97ed92ec646")
+	)
+	(label "UART0_TX"
+		(at 82.55 104.14 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "25bd4c8a-c7e4-410e-8174-965ded2933fc")
 	)
 	(label "ENCODER1_DT"
 		(at 44.45 143.51 180)
@@ -4533,7 +4837,7 @@
 		(uuid "3233d77e-9498-42c8-94da-ebc5dea93e58")
 	)
 	(label "ENCODER1_CLK"
-		(at 67.31 86.36 0)
+		(at 69.85 71.12 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -4597,6 +4901,17 @@
 			(justify left bottom)
 		)
 		(uuid "4b87e8f0-55e0-4255-adf2-cbf955fd9a69")
+	)
+	(label "UART0_RX"
+		(at 82.55 106.68 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4bf2f91f-25ac-4107-bc19-5d0d798b91be")
 	)
 	(label "GND"
 		(at 191.77 162.56 0)
@@ -4665,7 +4980,7 @@
 		(uuid "630a28a0-283c-4e66-bf52-09ea879ed893")
 	)
 	(label "ENCODER1_DT"
-		(at 67.31 88.9 0)
+		(at 69.85 48.26 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -4707,6 +5022,28 @@
 			(justify left bottom)
 		)
 		(uuid "697df423-255a-4b20-a360-07c127c39f59")
+	)
+	(label "GND"
+		(at 82.55 101.6 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "6e94befa-039c-467f-b23f-94f4bbb859f2")
+	)
+	(label "UART0_TX"
+		(at 21.59 38.1 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "73b79971-fb6b-46f2-ba16-a6436e584e3f")
 	)
 	(label "5v"
 		(at 245.11 99.06 0)
@@ -5127,24 +5464,24 @@
 		(uuid "c96ae7c4-2f88-4ed4-915f-2ecc644c7704")
 	)
 	(label "ENCODER2_SW"
-		(at 69.85 60.96 0)
+		(at 21.59 76.2 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
 		(uuid "c9e38b37-b050-4604-ae6f-c05223f7e0ca")
 	)
 	(label "GND"
-		(at 71.12 81.28 0)
+		(at 45.72 100.33 270)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
 		(uuid "ca25b9e6-2750-4b83-bf6e-88929ae2e5c1")
 	)
@@ -5248,13 +5585,13 @@
 		(uuid "e99c2cc9-c665-4197-bb0e-4ae76b6fd4f1")
 	)
 	(label "ENCODER2_DT"
-		(at 71.12 74.93 0)
+		(at 21.59 73.66 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
 		(uuid "eb7d7111-8936-4488-9013-b00dbbb72e4f")
 	)
@@ -7970,6 +8307,77 @@
 			(project "travyboard"
 				(path "/f40e124c-e4be-4508-9534-c431f9be00da/d4dd398f-8031-42f5-9517-3577efda2268"
 					(reference "D62")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Audio:AudioJack3")
+		(at 76.2 104.14 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "78c963a1-b9df-4308-96a6-659d776f01ae")
+		(property "Reference" "J1"
+			(at 74.295 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "AudioJack3"
+			(at 74.295 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "audio-jacks:PJ-399B-6A"
+			(at 76.2 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 76.2 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Audio Jack, 3 Poles (Stereo / TRS)"
+			(at 76.2 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "S"
+			(uuid "b84a68b3-b284-4051-8c8e-bc2096f16891")
+		)
+		(pin "R"
+			(uuid "a284a59b-952f-454c-be08-99a243bc1e97")
+		)
+		(pin "T"
+			(uuid "88cec2f6-ef1d-491e-8e21-fc83db69f818")
+		)
+		(instances
+			(project ""
+				(path "/f40e124c-e4be-4508-9534-c431f9be00da/d4dd398f-8031-42f5-9517-3577efda2268"
+					(reference "J1")
 					(unit 1)
 				)
 			)
