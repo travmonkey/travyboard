@@ -66,38 +66,44 @@ void handleButtonPress();
 void send_key(bool keys_pressed, uint8_t key);
 
 KeyBoard keyboard;
+RotaryEncoder encoder(9, 8, 7);
+// OledDisplay oled(i2c1, 26, 27);
 
 /*------------- MAIN -------------*/
 int main(void) {
   setup();
   board_init();
   tusb_init();
-  Encoder::init_encoder();
-
   gpio_init(0);
   gpio_set_dir(0, GPIO_OUT);
   gpio_put(0, false);
+  // oled.init();
+  // oled.clear();
+  // sleep_ms(100);
+  // oled.draw_text("Hello!");
+
 
   while (true) {
     tud_task(); // tinyusb device task
 
     led_blinking_task();
-    scanButtons();
+    // scanButtons();
+    encoder.listen();
     // hid_task(); // keyboard implementation
-    if (Encoder::get_position() > 0) {
-      gpio_put(0, true);         // Turn on the LED if rotating in one
-      Encoder::reset_position(); // Reset encoder position
-    } else if (Encoder::get_position() < 0) {
-      gpio_put(0, false);
-      Encoder::reset_position(); // Reset encoder position
-    }
-    if (Encoder::button_clicked()) {
-      if (gpio_get(0) == 1) {
-        gpio_put(0, true);
-      } else {
-        gpio_put(0, false);
-      }
-    }
+    // if (encoder.get_position() > 0) {
+    //   gpio_put(0, true);         // Turn on the LED if rotating in one
+    //   encoder.reset_position(); // Reset encoder position
+    // } else if (encoder.get_position() < 0) {
+    //   gpio_put(0, false);
+    //   encoder.reset_position(); // Reset encoder position
+    // }
+    // if (encoder.button_clicked()) {
+    //   if (gpio_get(0) == 1) {
+    //     gpio_put(0, true);
+    //   } else {
+    //     gpio_put(0, false);
+    //   }
+    // }
   }
 
   return 0;

@@ -3,22 +3,24 @@
 
 #include "pico/types.h"
 
-namespace Encoder {
-namespace {
-const uint ENCODER_CLK = 9;
-const uint ENCODER_DT = 8;
-const uint ENCODER_SW = 7;
-volatile int encoder_pos = 0;
-// extern bool last_button_state;
-} // namespace
+class RotaryEncoder {
+public:
+  RotaryEncoder(uint clk, uint dt, uint sw);
+  int get_position();
+  void reset_position();
+  bool button_clicked();
+  void listen();
 
-void gpio_isr_handler(uint gpio, uint32_t events);
-void init_encoder();
-int get_position();
-void reset_position();
-bool button_clicked();
+private:
+  const uint ENCODER_CLK;
+  const uint ENCODER_DT;
+  const uint ENCODER_SW;
+  void handle_interrupt(uint gpio, uint32_t events);
+  static void gpio_isr_handler(uint gpio, uint32_t events);
+  static RotaryEncoder *instance;
+  volatile int encoder_pos = 0;
+};
 
 // Add more function declarations here
-} // namespace Encoder
 
 #endif // ENCODER_H
