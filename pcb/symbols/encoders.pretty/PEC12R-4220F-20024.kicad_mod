@@ -1,0 +1,217 @@
+(footprint "PEC12R-4220F-20024"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(property "Reference" "SW43"
+		(at -0.000001 -0.5 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "775856c6-527b-48e1-8fb9-1d7629a5b2ba")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "Vertical Encoder"
+		(at -0.000001 -4.500001 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "65765581-85fc-4d99-b321-dfebd445e9ba")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" "encoders:PEC12R-4220F-20024"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "ff505d01-653e-4c62-8dd9-c314b6cdb79b")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "3d04ab41-c7a6-482d-bff9-088a36dc1954")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "Rotary encoder, dual channel, incremental quadrate outputs, with switch"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "c4f14289-d51a-4e68-889a-6cac4ea3c513")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(fp_line
+		(start -7.5 -8.499999)
+		(end -7.5 9)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "dacbe7a4-c591-4050-9b4a-1b57fa31f775")
+	)
+	(fp_line
+		(start -7.5 9)
+		(end 0 9)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "bee4933e-ef06-479f-84db-0d5218e372f7")
+	)
+	(fp_line
+		(start 0 9)
+		(end 7.499999 9)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "f5c2a4f6-6731-47bb-b261-49a9c0b6136f")
+	)
+	(fp_line
+		(start 7.499999 9)
+		(end 7.5 -0.000001)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "39a49720-1b74-4908-8e30-f40e10f9a2cf")
+	)
+	(fp_line
+		(start 7.5 -8.5)
+		(end -7.5 -8.499999)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "9e64a807-16a2-49ae-992f-de083a28cba6")
+	)
+	(fp_line
+		(start 7.5 -0.000001)
+		(end 7.5 -8.5)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "41df1754-ee52-4676-af32-66d5ccfeb0cb")
+	)
+	(fp_poly
+		(pts
+			(xy -6.599999 -1.099999) (xy -4.6 -1.1) (xy -4.6 1.1) (xy -6.6 1.100001)
+		)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill solid)
+		(layer "Edge.Cuts")
+		(uuid "0c2f567c-3d59-44a3-8002-5cf8652f0c08")
+	)
+	(fp_poly
+		(pts
+			(xy 6.6 -1.100001) (xy 4.6 -1.1) (xy 4.6 1.1) (xy 6.599999 1.099999)
+		)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill solid)
+		(layer "Edge.Cuts")
+		(uuid "ab957899-c3bb-4e35-a715-e2a2f7ba83f7")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0.000001 4.500001 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "83170273-1e1e-41c0-b9b6-ba883d4678db")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "A" thru_hole circle
+		(at -2.5 7.5)
+		(size 1.5 1.5)
+		(drill 1.1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "88c62ff8-42a8-4aed-8448-183598842a77")
+	)
+	(pad "B" thru_hole circle
+		(at 2.499999 7.500001)
+		(size 1.5 1.5)
+		(drill 1.1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "28bbe7ef-2b50-47a3-916d-8db122dea275")
+	)
+	(pad "C" thru_hole circle
+		(at 0.000001 7.5)
+		(size 1.5 1.5)
+		(drill 1.1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "349add98-ed98-4788-bbaa-012d13177cc8")
+	)
+	(pad "S1" thru_hole circle
+		(at -2.5 -6.999999)
+		(size 1.5 1.5)
+		(drill 1.1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "845fe556-454b-47eb-a011-cf1bf74af9c2")
+	)
+	(pad "S2" thru_hole circle
+		(at 2.5 -6.999999)
+		(size 1.5 1.5)
+		(drill 1.1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "2a75fccb-ba0a-47d2-9c38-ba226d6eedb5")
+	)
+	(model "${KIPRJMOD}/models/pec12r-4220f-s0024.stp"
+		(offset
+			(xyz 0 0 0.5)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz -90 0 180)
+		)
+	)
+)

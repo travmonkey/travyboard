@@ -1,0 +1,247 @@
+(footprint "PEC12R-2120F-S0012"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(property "Reference" "SW44"
+		(at 0 -0.5 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "7b235942-9e64-4dfa-939e-3851a6abbb54")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "Horizontal Encoder"
+		(at 0 -2 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "774a91a6-8e59-4e5a-8082-e087071a5075")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" "encoders:PEC12R-2120F-S0012"
+		(at 0 -3.5 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "e4f81833-9adf-4ff3-af6e-a6d3c661846c")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "ffb8424c-1365-4df9-b177-3e616a17b56a")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "Rotary encoder, dual channel, incremental quadrate outputs, with switch"
+		(at 0 -5 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "64dd760e-ede0-4746-a4b2-9aec8c2c77f5")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(fp_line
+		(start -8 -2.5)
+		(end -8 5)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "8d385a7d-3d4d-42ff-965d-06dee15ca39b")
+	)
+	(fp_line
+		(start -8 5)
+		(end 8 5)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "e8d08ab7-3c23-42fb-a6ac-cd3ebc8614d3")
+	)
+	(fp_line
+		(start -2.5 5)
+		(end -2.5 10)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "42a8ad0b-cf9d-4777-a16b-5356551ef4eb")
+	)
+	(fp_line
+		(start -2.5 10)
+		(end -2.5 18)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "ada84655-545c-4c95-95d0-6e9f8f1f8628")
+	)
+	(fp_line
+		(start -2.5 18)
+		(end 2.5 18)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "0b55a7b7-890c-4ff4-ba3f-93e0c7e6326a")
+	)
+	(fp_line
+		(start 2.5 5)
+		(end 2.5 10)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "45c0abb4-6801-48c7-a99a-8a8d42a706aa")
+	)
+	(fp_line
+		(start 2.5 10)
+		(end 2.5 18)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "eab7e943-b0ca-4b54-be8f-f97549766333")
+	)
+	(fp_line
+		(start 8 -2.5)
+		(end -8 -2.5)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "410aa22e-f071-46fd-86ba-a3d0a00c1081")
+	)
+	(fp_line
+		(start 8 5)
+		(end 8 -2.5)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "7304e05e-0aaa-491a-bb46-beed7d39f9f5")
+	)
+	(fp_poly
+		(pts
+			(xy -7.51 -1.05) (xy -5.4 -1.05) (xy -5.4 1.050001) (xy -7.51 1.05)
+		)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill solid)
+		(layer "Edge.Cuts")
+		(uuid "17c7d75f-2b12-41b0-8669-7fc348a039e2")
+	)
+	(fp_poly
+		(pts
+			(xy 5.4 1.05) (xy 7.51 1.05) (xy 7.51 -1.05) (xy 5.4 -1.050001)
+		)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill solid)
+		(layer "Edge.Cuts")
+		(uuid "3e4a39b3-61cb-421a-8f77-6e89552c6b84")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 2.5 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "38f33d56-be46-4df1-907e-87e8046168f5")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "A" thru_hole circle
+		(at -2.5 3.5)
+		(size 1.45 1.45)
+		(drill 1.05)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "7cf24c4c-a08b-48c7-8a72-9912d79ad5fd")
+	)
+	(pad "B" thru_hole circle
+		(at 2.5 3.500001)
+		(size 1.45 1.45)
+		(drill 1.05)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "0671a85d-b3f8-40f6-8675-21194ae08189")
+	)
+	(pad "C" thru_hole circle
+		(at 0 3.5)
+		(size 1.45 1.45)
+		(drill 1.05)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "c8687b04-7b7f-413b-b018-f16c8f8d5039")
+	)
+	(pad "S1" thru_hole circle
+		(at -2.5 1)
+		(size 1.45 1.45)
+		(drill 1.05)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "5c8b20f1-184b-4b46-b64b-25a744bbb5f5")
+	)
+	(pad "S2" thru_hole circle
+		(at 2.5 1.000001)
+		(size 1.45 1.45)
+		(drill 1.05)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "00df144c-cb5b-4da6-b0d6-c3477c4fa1bd")
+	)
+	(model "${KIPRJMOD}/models/pec12r-2120f-s0012.stp"
+		(offset
+			(xyz 0 0 10)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 180)
+		)
+	)
+)
