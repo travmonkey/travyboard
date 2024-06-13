@@ -7319,7 +7319,7 @@
 				)
 			)
 		)
-		(property "Value" "T"
+		(property "Value" "EX3"
 			(at 171.45 58.42 0)
 			(effects
 				(font
@@ -10961,7 +10961,7 @@
 				)
 			)
 		)
-		(property "Value" "G"
+		(property "Value" "EX4"
 			(at 171.45 83.82 0)
 			(effects
 				(font

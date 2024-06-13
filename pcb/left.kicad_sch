@@ -6878,7 +6878,7 @@
 				)
 			)
 		)
-		(property "Value" "T"
+		(property "Value" "EX1"
 			(at 173.99 20.32 0)
 			(effects
 				(font
@@ -10823,7 +10823,7 @@
 				)
 			)
 		)
-		(property "Value" "G"
+		(property "Value" "EX2"
 			(at 173.99 45.72 0)
 			(effects
 				(font
