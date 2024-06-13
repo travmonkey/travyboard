@@ -28,11 +28,13 @@
 #include "class/hid/hid_device.h"
 #include "hardware/gpio.h"
 #include "hardware/timer.h"
+#include "hardware/uart.h"
 #include "pico/time.h"
 #include "tusb.h"
 
 #include "encoder.hpp"
-#include "keyboard.hpp"
+// #include "keyboard.hpp"
+#include "keymap.hpp"
 #include "usb_descriptors.h"
 
 #define ROW_1 14
@@ -42,6 +44,11 @@
 #define COLUMN_3 13
 
 #define DEBOUNCE_TIME 15
+
+#define UART_ID uart0
+#define BAUD_RATE 115200
+#define UART_TX_PIN 0
+#define UART_RX_PIN 1
 
 //--------------------------------------------------------------------+
 // MACRO CONSTANT TYPEDEF PROTYPES
@@ -65,18 +72,28 @@ void scanButtons(void);
 void handleButtonPress();
 void send_key(bool keys_pressed, uint8_t key);
 
-KeyBoard keyboard;
+// KeyBoard keyboard;
+KeyBoard left_keyboard("left");
 RotaryEncoder encoder(9, 8, 7);
 // OledDisplay oled(i2c1, 26, 27);
+
+void uart_init() {
+  uart_init(UART_ID, BAUD_RATE);
+  gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
+  gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
+
+}
+
+void send_uart(const char *data) {
+  uart_puts(UART_ID, data);
+}
 
 /*------------- MAIN -------------*/
 int main(void) {
   setup();
   board_init();
   tusb_init();
-  gpio_init(0);
-  gpio_set_dir(0, GPIO_OUT);
-  gpio_put(0, false);
+  // uart_init();
   // oled.init();
   // oled.clear();
   // sleep_ms(100);
@@ -87,8 +104,9 @@ int main(void) {
     tud_task(); // tinyusb device task
 
     led_blinking_task();
-    // scanButtons();
-    encoder.listen();
+    scanButtons();
+    // send_uart("Hello");
+    // encoder.listen();
     // hid_task(); // keyboard implementation
     // if (encoder.get_position() > 0) {
     //   gpio_put(0, true);         // Turn on the LED if rotating in one
@@ -156,7 +174,8 @@ void scanButtons(void) {
   sleep_us(1); // Small delay for accuracy
   // Check each column for changes
   if (gpio_get(COLUMN_1) && total_keys < 6) {
-    current_keys[total_keys] = HID_KEY_1;
+    uint8_t temp_keycode = left_keyboard.returnKeycode();
+    current_keys[total_keys] = temp_keycode;
     total_keys += 1;
   }
   if (gpio_get(COLUMN_2)) {
@@ -234,51 +253,51 @@ void handleButtonPress() {
   }
 }
 
-static void send_hid_report(bool keys_pressed) {
-  // skip if hid is not ready yet
-  if (!tud_hid_ready()) {
-    return;
-  }
-
-  // avoid sending multiple zero reports
-  static bool send_empty = false;
-
-  if (keys_pressed) {
-    tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, keyboard.key_codes);
-    send_empty = true;
-  } else {
-    // send empty key report if previously has key pressed
-    if (send_empty) {
-      tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, NULL);
-    }
-    send_empty = false;
-  }
-}
-
-// Every 10ms, we poll the pins and send a report
-void hid_task(void) {
-  // Poll every 10ms
-  const uint32_t interval_ms = 10;
-  static uint32_t start_ms = 0;
-
-  if (board_millis() - start_ms < interval_ms) {
-    return; // not enough time
-  }
-  start_ms += interval_ms;
-
-  // Check for keys pressed
-  bool const keys_pressed = keyboard.update();
-
-  // Remote wakeup
-  if (tud_suspended() && keys_pressed) {
-    // Wake up host if we are in suspend mode
-    // and REMOTE_WAKEUP feature is enabled by host
-    tud_remote_wakeup();
-  } else {
-    // send a report
-    send_hid_report(keys_pressed);
-  }
-}
+// static void send_hid_report(bool keys_pressed) {
+//   // skip if hid is not ready yet
+//   if (!tud_hid_ready()) {
+//     return;
+//   }
+//
+//   // avoid sending multiple zero reports
+//   static bool send_empty = false;
+//
+//   if (keys_pressed) {
+//     tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, keyboard.key_codes);
+//     send_empty = true;
+//   } else {
+//     // send empty key report if previously has key pressed
+//     if (send_empty) {
+//       tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, NULL);
+//     }
+//     send_empty = false;
+//   }
+// }
+//
+// // Every 10ms, we poll the pins and send a report
+// void hid_task(void) {
+//   // Poll every 10ms
+//   const uint32_t interval_ms = 10;
+//   static uint32_t start_ms = 0;
+//
+//   if (board_millis() - start_ms < interval_ms) {
+//     return; // not enough time
+//   }
+//   start_ms += interval_ms;
+//
+//   // Check for keys pressed
+//   bool const keys_pressed = keyboard.update();
+//
+//   // Remote wakeup
+//   if (tud_suspended() && keys_pressed) {
+//     // Wake up host if we are in suspend mode
+//     // and REMOTE_WAKEUP feature is enabled by host
+//     tud_remote_wakeup();
+//   } else {
+//     // send a report
+//     send_hid_report(keys_pressed);
+//   }
+// }
 
 // Invoked when sent REPORT successfully to host
 // Application can use this to send the next report
