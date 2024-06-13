@@ -5,7 +5,7 @@ add_executable(master)
 target_sources(master PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/master/master.cpp
     ${CMAKE_CURRENT_LIST_DIR}/rotary_encoder/encoder.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/layers/keymap.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/keymap/keymap.cpp
     ${CMAKE_CURRENT_LIST_DIR}/oled/oled.cpp
     ${CMAKE_CURRENT_LIST_DIR}/tusb/usb_descriptors.c
 )
@@ -13,7 +13,7 @@ target_sources(master PUBLIC
 # Make sure TinyUSB can find tusb_config.h
 target_include_directories(master PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}
-    ${CMAKE_CURRENT_LIST_DIR}/layers
+    ${CMAKE_CURRENT_LIST_DIR}/keymap
     ${CMAKE_CURRENT_LIST_DIR}/oled
     ${CMAKE_CURRENT_LIST_DIR}/rotary_encoder
     ${CMAKE_CURRENT_LIST_DIR}/tusb

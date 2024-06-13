@@ -25,7 +25,7 @@ struct KeyMap {
 
 class KeyBoard {
 private:
-  char keymaps[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS]; // 3D array to store the keys
+  char keymap[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS]; // 3D array to store the keys
 
 public:
   // Constructor allowing both left and right to be defined
