@@ -37,6 +37,7 @@
 // #include "keyboard.hpp"
 #include "keymap.hpp"
 #include "usb_descriptors.h"
+#include <cstdint>
 
 //--------------------------------------------------------------------+
 // MACRO CONSTANT TYPEDEF PROTYPES
@@ -139,6 +140,9 @@ void scan_buttons(void) {
   // Define the total amount of keys pressed. This is a max of 6
   uint total_keys = 0;
 
+  // Set the current layer
+  uint8_t layer = set_mod_layer();
+
   // Loop over every row
   for (uint8_t row = 0; row < sizeof(ROW_PINS); row++) {
     // Start scanning current row
@@ -149,7 +153,8 @@ void scan_buttons(void) {
     for (uint8_t col = 0; col < sizeof(COLUMN_PINS); col++) {
       if (gpio_get(COLUMN_PINS[col]) && total_keys < 6) {
         // Scan columns and add the key to the current keys
-        current_keys[total_keys] = left_keyboard.return_keycode(row, col, 0);
+        current_keys[total_keys] =
+            left_keyboard.return_keycode(row, col, layer);
         total_keys += 1;
       }
     }
@@ -160,6 +165,37 @@ void scan_buttons(void) {
 
   handle_button_press();
 }
+
+bool scan_left_mod() {
+  // Scan for left layer key
+  gpio_put(LEFT_MOD_ROW_PIN, 1);
+  sleep_us(1); // Small delay for accuracy
+  bool is_pressed = gpio_get(LEFT_MOD_COLUMN_PIN);
+  gpio_put(LEFT_MOD_ROW_PIN, 0);
+  return is_pressed;
+}
+
+bool scan_right_mod() {
+  // Scan for left layer key
+  gpio_put(RIGHT_MOD_ROW_PIN, 1);
+  sleep_us(1); // Small delay for accuracy
+  bool is_pressed = gpio_get(RIGHT_MOD_COLUMN_PIN);
+  gpio_put(RIGHT_MOD_ROW_PIN, 0);
+  return is_pressed;
+}
+
+// Potentially rework this with less scans if latency becomes an issue
+uint8_t set_mod_layer() {
+  // Check which layer keys are pressed
+  if (scan_left_mod() && scan_right_mod()) {
+    return 3; // Return layer 3 if both pressed
+  } else if (scan_left_mod()) {
+    return 1; // Return layer 1 if only left pressed
+  } else if (scan_right_mod()) {
+    return 2; // Return layer 2 if only right pressed
+  }
+  return 0; // Return default (0) layer
+};
 
 static void send_key(bool keys_pressed, uint8_t keys[6]) {
   // skip if hid is not ready yet

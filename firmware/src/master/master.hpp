@@ -5,14 +5,16 @@
 
 #include <cstdint>
 
-#define ROW_0 14
-#define ROW_1 15
-#define COLUMN_0 11
-#define COLUMN_1 12
-#define COLUMN_2 13
+// Define the mod key pins
+#define LEFT_MOD_ROW_PIN 15
+#define LEFT_MOD_COLUMN_PIN 13
+#define RIGHT_MOD_ROW_PIN 15
+#define RIGHT_MOD_COLUMN_PIN 11
 
+// Debounce time to prevent double presses
 #define DEBOUNCE_TIME 15
 
+// Uart definitions
 #define UART_ID uart0
 #define BAUD_RATE 115200
 #define UART_TX_PIN 0
@@ -32,6 +34,11 @@ void setup(void);
 void scan_buttons(void);
 void handle_button_press();
 void send_key(bool keys_pressed, uint8_t key);
+
+// Layer functions
+uint8_t set_mod_layer();
+bool scan_left_mod();
+bool scan_right_mod();
 
 void led_blinking_task(void);
 

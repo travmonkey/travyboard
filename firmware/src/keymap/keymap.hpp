@@ -11,18 +11,6 @@
 #define NUM_COLUMNS 7
 #define NUM_LAYERS 4
 
-struct KeyMap {
-  uint8_t row;
-  uint8_t column;
-  uint8_t key[4];
-
-  KeyMap() : row(0), column(0), key{0} {}
-
-  KeyMap(uint8_t r, uint8_t c, const uint8_t *k) : row(r), column(c) {
-    std::copy(k, k + 4, key);
-  }
-};
-
 class KeyBoard {
 private:
   char keymap[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS]; // 3D array to store the keys
