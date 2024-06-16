@@ -1,0 +1,9 @@
+# ignore build and cache directory
+firmware/build/*
+firmware/.cache/*
+
+# Ignore kicad lockfiles
+*.lck
+
+# Ignore mac bullshit
+.DS_STORE
