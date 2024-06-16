@@ -18,7 +18,7 @@ struct KeyMap {
 
   KeyMap() : row(0), column(0), key{0} {}
 
-  KeyMap(uint8_t r, uint8_t c, const uint8_t* k) : row(r), column(c) {
+  KeyMap(uint8_t r, uint8_t c, const uint8_t *k) : row(r), column(c) {
     std::copy(k, k + 4, key);
   }
 };
@@ -29,16 +29,14 @@ private:
 
 public:
   // Constructor allowing both left and right to be defined
-  KeyBoard(const std::string& name);
-
-
+  KeyBoard(const std::string &name);
 
   // function to refresh the keyboard
   void refresh();
 
-  void createKeymaps(uint8_t keys[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS]);
+  void create_keymaps(uint8_t keys[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS]);
 
-  uint8_t returnKeycode();
+  uint8_t return_keycode(uint8_t row, uint8_t column, uint8_t layer);
 
   // List to store the keycodes for the next send
   uint8_t key_codes[6] = {0};

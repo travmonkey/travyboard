@@ -33,44 +33,18 @@
 #include "tusb.h"
 
 #include "encoder.hpp"
+#include "master.hpp"
 // #include "keyboard.hpp"
 #include "keymap.hpp"
 #include "usb_descriptors.h"
-
-#define ROW_1 14
-#define ROW_2 15
-#define COLUMN_1 11
-#define COLUMN_2 12
-#define COLUMN_3 13
-
-#define DEBOUNCE_TIME 15
-
-#define UART_ID uart0
-#define BAUD_RATE 115200
-#define UART_TX_PIN 0
-#define UART_RX_PIN 1
 
 //--------------------------------------------------------------------+
 // MACRO CONSTANT TYPEDEF PROTYPES
 //--------------------------------------------------------------------+
 
 // Blink pattern
-enum {
-  BLINK_NOT_MOUNTED = 250, // device not mounted
-  BLINK_MOUNTED = 1000,    // device mounted
-  BLINK_SUSPENDED = 2500,  // device is suspended
-};
-
 static uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
 static uint8_t current_keys[6] = {0};
-
-void led_blinking_task(void);
-void hid_task(void);
-
-void setup(void);
-void scanButtons(void);
-void handleButtonPress();
-void send_key(bool keys_pressed, uint8_t key);
 
 // KeyBoard keyboard;
 KeyBoard left_keyboard("left");
@@ -81,12 +55,9 @@ void uart_init() {
   uart_init(UART_ID, BAUD_RATE);
   gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
   gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
-
 }
 
-void send_uart(const char *data) {
-  uart_puts(UART_ID, data);
-}
+void send_uart(const char *data) { uart_puts(UART_ID, data); }
 
 /*------------- MAIN -------------*/
 int main(void) {
@@ -99,12 +70,11 @@ int main(void) {
   // sleep_ms(100);
   // oled.draw_text("Hello!");
 
-
   while (true) {
     tud_task(); // tinyusb device task
 
     led_blinking_task();
-    scanButtons();
+    scan_buttons();
     // send_uart("Hello");
     // encoder.listen();
     // hid_task(); // keyboard implementation
@@ -131,83 +101,64 @@ int main(void) {
 // USB HID
 //--------------------------------------------------------------------+
 
+// PIN DEFINITIONS
+const uint8_t ROW_PINS[2] = {14, 15};
+const uint8_t COLUMN_PINS[3] = {11, 12, 13};
+
 void setup(void) {
   // Initialize the row pins as the output
-  gpio_init(ROW_1);
-  gpio_set_dir(ROW_1, GPIO_OUT);
-  gpio_init(ROW_2);
-  gpio_set_dir(ROW_2, GPIO_OUT);
+  for (uint8_t PIN : ROW_PINS) {
+    gpio_init(PIN);
+    gpio_set_dir(PIN, GPIO_OUT);
+  }
 
   // Initialize the column pins as the input, and pull them down
-  gpio_init(COLUMN_1);
-  gpio_set_dir(COLUMN_1, GPIO_IN);
-  gpio_pull_down(COLUMN_1);
-
-  gpio_init(COLUMN_2);
-  gpio_set_dir(COLUMN_2, GPIO_IN);
-  gpio_pull_down(COLUMN_2);
-
-  gpio_init(COLUMN_3);
-  gpio_set_dir(COLUMN_3, GPIO_IN);
-  gpio_pull_down(COLUMN_3);
+  for (uint8_t PIN : COLUMN_PINS) {
+    gpio_init(PIN);
+    gpio_set_dir(PIN, GPIO_IN);
+    gpio_pull_down(PIN);
+  }
 }
 
-void scanButtons(void) {
+void scan_buttons(void) {
   // Poll every 1ms
   const uint32_t interval_ms = 1;
   static uint32_t start_ms = 0;
 
+  // Check for time since last poll
   if (board_millis() - start_ms < interval_ms) {
     return; // not enough time
   }
   start_ms += interval_ms;
 
+  // Reset the current_keys array
   for (size_t i = 0; i < 6; i++) {
     current_keys[i] = 0;
   }
 
   // Define the total amount of keys pressed. This is a max of 6
-  int total_keys = 0;
+  uint total_keys = 0;
 
-  // Start scanning row 1
-  gpio_put(ROW_1, 1);
-  sleep_us(1); // Small delay for accuracy
-  // Check each column for changes
-  if (gpio_get(COLUMN_1) && total_keys < 6) {
-    uint8_t temp_keycode = left_keyboard.returnKeycode();
-    current_keys[total_keys] = temp_keycode;
-    total_keys += 1;
-  }
-  if (gpio_get(COLUMN_2)) {
-    current_keys[total_keys] = HID_KEY_ALT_LEFT;
-    total_keys += 1;
-  }
-  if (gpio_get(COLUMN_3)) {
-    current_keys[total_keys] = HID_KEY_2;
-    total_keys += 1;
-  }
-  // Stop scanning row 1
-  gpio_put(ROW_1, 0);
+  // Loop over every row
+  for (uint8_t row = 0; row < sizeof(ROW_PINS); row++) {
+    // Start scanning current row
+    gpio_put(ROW_PINS[row], 1);
+    sleep_us(1); // Small delay for accuracy
 
-  // Start scanning row 2
-  gpio_put(ROW_2, 1);
-  sleep_us(1); // Small delay for accuracy
-  // Check each column for changes
-  if (gpio_get(COLUMN_1)) {
-    current_keys[total_keys] = HID_KEY_A;
-    total_keys += 1;
+    // Loop over every column
+    for (uint8_t col = 0; col < sizeof(COLUMN_PINS); col++) {
+      if (gpio_get(COLUMN_PINS[col]) && total_keys < 6) {
+        // Scan columns and add the key to the current keys
+        current_keys[total_keys] = left_keyboard.return_keycode(row, col, 0);
+        total_keys += 1;
+      }
+    }
+
+    // Stop scanning current row
+    gpio_put(ROW_PINS[row], 0);
   }
-  if (gpio_get(COLUMN_2)) {
-    current_keys[total_keys] = HID_KEY_S;
-    total_keys += 1;
-  }
-  if (gpio_get(COLUMN_3)) {
-    current_keys[total_keys] = HID_KEY_D;
-    total_keys += 1;
-  }
-  // Stop scanning row 2
-  gpio_put(ROW_2, 0);
-  handleButtonPress();
+
+  handle_button_press();
 }
 
 static void send_key(bool keys_pressed, uint8_t keys[6]) {
@@ -231,7 +182,7 @@ static void send_key(bool keys_pressed, uint8_t keys[6]) {
   }
 }
 
-void handleButtonPress() {
+void handle_button_press() {
   // Handle debouncing
   static uint64_t lastPressTime = 0;
   uint64_t currentTime = time_us_64();
@@ -366,7 +317,8 @@ void tud_umount_cb(void) { blink_interval_ms = BLINK_NOT_MOUNTED; }
 
 // Invoked when usb bus is suspended
 // remote_wakeup_en : if host allow us  to perform remote wakeup
-// Within 7ms, device must draw an average of current less than 2.5 mA from bus
+// Within 7ms, device must draw an average of current less than 2.5 mA from
+// bus
 void tud_suspend_cb(bool remote_wakeup_en) {
   (void)remote_wakeup_en;
   blink_interval_ms = BLINK_SUSPENDED;

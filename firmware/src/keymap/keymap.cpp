@@ -46,7 +46,7 @@ KeyBoard::KeyBoard(const std::string &name) {
             {HID_KEY_SPACE, '\0', '\0', '\0'},
         },
     };
-    createKeymaps(keys);
+    create_keymaps(keys);
   } else if (name == "right") {
     // Initialize the right half of keys
     uint8_t keys[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS] = {
@@ -87,12 +87,12 @@ KeyBoard::KeyBoard(const std::string &name) {
         },
     };
     // Call function to put the keys into the keymap variable
-    createKeymaps(keys);
+    create_keymaps(keys);
   }
 };
 
 // Add all of the keys to the keymap variable
-void KeyBoard::createKeymaps(uint8_t keys[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS]) {
+void KeyBoard::create_keymaps(uint8_t keys[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS]) {
   for (int r = 0; r < NUM_ROWS; r++) {
     for (int c = 0; c < NUM_COLUMNS; c++) {
       for (int l = 0; l < NUM_LAYERS; l++) {
@@ -102,7 +102,9 @@ void KeyBoard::createKeymaps(uint8_t keys[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS]) {
   }
 }
 
-uint8_t KeyBoard::returnKeycode() { return keymap[0][5][0]; }
+uint8_t KeyBoard::return_keycode(uint8_t row, uint8_t column, uint8_t layer) {
+  return keymap[row][column][layer];
+}
 
 void KeyBoard::refresh() {
   // First clear the key code cache from the previous send
