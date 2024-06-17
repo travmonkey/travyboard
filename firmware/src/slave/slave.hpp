@@ -1,7 +1,7 @@
 // travmonkey
 
-#ifndef MASTER_H
-#define MASTER_H
+#ifndef SLAVE_H
+#define SLAVE_H
 
 // Define the mod key pins
 #define LEFT_MOD_ROW_PIN 15
@@ -27,4 +27,4 @@ enum {
 
 void led_blinking_task(void);
 
-#endif // MASTER_H
+#endif // SLAVE_H

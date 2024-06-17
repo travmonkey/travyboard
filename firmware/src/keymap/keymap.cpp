@@ -5,7 +5,7 @@
 #include <cstddef>
 #include <cstdint>
 
-KeyBoard::KeyBoard(const std::string &name) {
+KeyMap::KeyMap(const std::string &name) {
   // Initialize all of the keys depending on which half is stated
   if (name == "left") {
     // Initialize the left half of keys
@@ -96,7 +96,7 @@ KeyBoard::KeyBoard(const std::string &name) {
 };
 
 // Add all of the keys to the keymap variable
-void KeyBoard::create_keymaps(uint8_t keys[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS]) {
+void KeyMap::create_keymaps(uint8_t keys[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS]) {
   for (int r = 0; r < NUM_ROWS; r++) {
     for (int c = 0; c < NUM_COLUMNS; c++) {
       for (int l = 0; l < NUM_LAYERS; l++) {
@@ -106,13 +106,13 @@ void KeyBoard::create_keymaps(uint8_t keys[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS]) {
   }
 }
 
-uint8_t KeyBoard::return_keycode(uint8_t row, uint8_t column, uint8_t layer) {
+uint8_t KeyMap::return_keycode(uint8_t row, uint8_t column, uint8_t layer) {
   return keymap[row][column][layer];
 }
 
-void KeyBoard::refresh() {
+void KeyMap::refresh() {
   // First clear the key code cache from the previous send
   for (size_t i = 0; i < 6; i++) {
-    KeyBoard::key_codes[i] = 0;
+    KeyMap::key_codes[i] = 0;
   }
 }

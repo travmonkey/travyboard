@@ -11,13 +11,13 @@
 #define NUM_COLUMNS 7
 #define NUM_LAYERS 4
 
-class KeyBoard {
+class KeyMap {
 private:
   char keymap[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS]; // 3D array to store the keys
 
 public:
   // Constructor allowing both left and right to be defined
-  KeyBoard(const std::string &name);
+  KeyMap(const std::string &name);
 
   // function to refresh the keyboard
   void refresh();

@@ -27,15 +27,12 @@
 #include "class/hid/hid.h"
 #include "class/hid/hid_device.h"
 #include "hardware/gpio.h"
-#include "hardware/timer.h"
 #include "hardware/uart.h"
-#include "pico/time.h"
 #include "tusb.h"
 
 #include "encoder.hpp"
 #include "master.hpp"
-// #include "keyboard.hpp"
-#include "keymap.hpp"
+#include "keyboard.hpp"
 #include "usb_descriptors.h"
 #include <cstdint>
 
@@ -45,12 +42,13 @@
 
 // Blink pattern
 static uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
-static uint8_t current_keys[6] = {0};
+// static uint8_t current_keys[6] = {0};
 
-// KeyBoard keyboard;
-KeyBoard left_keyboard("left");
-RotaryEncoder encoder(9, 8, 7);
-// OledDisplay oled(i2c1, 26, 27);
+KeyBoard left_keyboard;
+KeyBoard right_keyboard;
+
+// Create rotary encoders
+RotaryEncoder horizontal_encoder(9, 8, 7);
 
 void uart_init() {
   uart_init(UART_ID, BAUD_RATE);
@@ -58,233 +56,45 @@ void uart_init() {
   gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
 }
 
-void send_uart(const char *data) { uart_puts(UART_ID, data); }
-
 /*------------- MAIN -------------*/
 int main(void) {
-  setup();
+  // Initialize the board and TinyUsb
   board_init();
   tusb_init();
-  // uart_init();
-  // oled.init();
-  // oled.clear();
-  // sleep_ms(100);
-  // oled.draw_text("Hello!");
+  uart_init();
+
+  gpio_init(2);
+  gpio_set_dir(2, GPIO_OUT);
+  gpio_put(2, false);
+
 
   while (true) {
     tud_task(); // tinyusb device task
 
+    // Task to manage the blinking of the onboard LED
     led_blinking_task();
-    scan_buttons();
-    // send_uart("Hello");
-    // encoder.listen();
-    // hid_task(); // keyboard implementation
-    // if (encoder.get_position() > 0) {
-    //   gpio_put(0, true);         // Turn on the LED if rotating in one
-    //   encoder.reset_position(); // Reset encoder position
-    // } else if (encoder.get_position() < 0) {
-    //   gpio_put(0, false);
-    //   encoder.reset_position(); // Reset encoder position
-    // }
-    // if (encoder.button_clicked()) {
-    //   if (gpio_get(0) == 1) {
-    //     gpio_put(0, true);
-    //   } else {
-    //     gpio_put(0, false);
-    //   }
-    // }
+    left_keyboard.scan_buttons();
+
+    if (uart_is_readable(UART_ID)) {
+      bool data = false;
+      // uint8_t data[6] = {0};
+      data = uart_getc(UART_ID);
+
+      if (data) {
+        gpio_put(2, true);
+      }
+
+      left_keyboard.handle_button_press();
+    }
+    
   }
 
   return 0;
 }
 
 //--------------------------------------------------------------------+
-// USB HID
+// USB HID TINYUSB FUNCTIONS
 //--------------------------------------------------------------------+
-
-// PIN DEFINITIONS
-const uint8_t ROW_PINS[2] = {14, 15};
-const uint8_t COLUMN_PINS[3] = {11, 12, 13};
-
-void setup(void) {
-  // Initialize the row pins as the output
-  for (uint8_t PIN : ROW_PINS) {
-    gpio_init(PIN);
-    gpio_set_dir(PIN, GPIO_OUT);
-  }
-
-  // Initialize the column pins as the input, and pull them down
-  for (uint8_t PIN : COLUMN_PINS) {
-    gpio_init(PIN);
-    gpio_set_dir(PIN, GPIO_IN);
-    gpio_pull_down(PIN);
-  }
-}
-
-void scan_buttons(void) {
-  // Poll every 1ms
-  const uint32_t interval_ms = 1;
-  static uint32_t start_ms = 0;
-
-  // Check for time since last poll
-  if (board_millis() - start_ms < interval_ms) {
-    return; // not enough time
-  }
-  start_ms += interval_ms;
-
-  // Reset the current_keys array
-  for (size_t i = 0; i < 6; i++) {
-    current_keys[i] = 0;
-  }
-
-  // Define the total amount of keys pressed. This is a max of 6
-  uint total_keys = 0;
-
-  // Set the current layer
-  uint8_t layer = set_mod_layer();
-
-  // Loop over every row
-  for (uint8_t row = 0; row < sizeof(ROW_PINS); row++) {
-    // Start scanning current row
-    gpio_put(ROW_PINS[row], 1);
-    sleep_us(1); // Small delay for accuracy
-
-    // Loop over every column
-    for (uint8_t col = 0; col < sizeof(COLUMN_PINS); col++) {
-      if (gpio_get(COLUMN_PINS[col]) && total_keys < 6) {
-        // Scan columns and add the key to the current keys
-        current_keys[total_keys] =
-            left_keyboard.return_keycode(row, col, layer);
-        total_keys += 1;
-      }
-    }
-
-    // Stop scanning current row
-    gpio_put(ROW_PINS[row], 0);
-  }
-
-  handle_button_press();
-}
-
-bool scan_left_mod() {
-  // Scan for left layer key
-  gpio_put(LEFT_MOD_ROW_PIN, 1);
-  sleep_us(1); // Small delay for accuracy
-  bool is_pressed = gpio_get(LEFT_MOD_COLUMN_PIN);
-  gpio_put(LEFT_MOD_ROW_PIN, 0);
-  return is_pressed;
-}
-
-bool scan_right_mod() {
-  // Scan for left layer key
-  gpio_put(RIGHT_MOD_ROW_PIN, 1);
-  sleep_us(1); // Small delay for accuracy
-  bool is_pressed = gpio_get(RIGHT_MOD_COLUMN_PIN);
-  gpio_put(RIGHT_MOD_ROW_PIN, 0);
-  return is_pressed;
-}
-
-// Potentially rework this with less scans if latency becomes an issue
-uint8_t set_mod_layer() {
-  // Check which layer keys are pressed
-  if (scan_left_mod() && scan_right_mod()) {
-    return 3; // Return layer 3 if both pressed
-  } else if (scan_left_mod()) {
-    return 1; // Return layer 1 if only left pressed
-  } else if (scan_right_mod()) {
-    return 2; // Return layer 2 if only right pressed
-  }
-  return 0; // Return default (0) layer
-};
-
-static void send_key(bool keys_pressed, uint8_t keys[6]) {
-  // skip if hid is not ready yet
-  if (!tud_hid_ready()) {
-    return;
-  }
-
-  // avoid sending multiple zero reports
-  static bool send_empty = false;
-
-  if (keys_pressed) {
-    tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, keys);
-    send_empty = true;
-  } else {
-    // send empty key report if previously has key pressed
-    if (send_empty) {
-      tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, NULL);
-    }
-    send_empty = false;
-  }
-}
-
-void handle_button_press() {
-  // Handle debouncing
-  static uint64_t lastPressTime = 0;
-  uint64_t currentTime = time_us_64();
-
-  if (currentTime - lastPressTime < DEBOUNCE_TIME) {
-    return;
-  }
-  lastPressTime = currentTime;
-
-  // Check if either row is recieving input
-  static uint8_t input_pins[2] = {14, 15};
-  for (size_t i = 0; i < 2; i++) {
-    if (gpio_get(input_pins[i]) == 0) {
-      // Send list of keys pressed
-      send_key(true, current_keys);
-    } else {
-      send_key(false, current_keys);
-    }
-  }
-}
-
-// static void send_hid_report(bool keys_pressed) {
-//   // skip if hid is not ready yet
-//   if (!tud_hid_ready()) {
-//     return;
-//   }
-//
-//   // avoid sending multiple zero reports
-//   static bool send_empty = false;
-//
-//   if (keys_pressed) {
-//     tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, keyboard.key_codes);
-//     send_empty = true;
-//   } else {
-//     // send empty key report if previously has key pressed
-//     if (send_empty) {
-//       tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, NULL);
-//     }
-//     send_empty = false;
-//   }
-// }
-//
-// // Every 10ms, we poll the pins and send a report
-// void hid_task(void) {
-//   // Poll every 10ms
-//   const uint32_t interval_ms = 10;
-//   static uint32_t start_ms = 0;
-//
-//   if (board_millis() - start_ms < interval_ms) {
-//     return; // not enough time
-//   }
-//   start_ms += interval_ms;
-//
-//   // Check for keys pressed
-//   bool const keys_pressed = keyboard.update();
-//
-//   // Remote wakeup
-//   if (tud_suspended() && keys_pressed) {
-//     // Wake up host if we are in suspend mode
-//     // and REMOTE_WAKEUP feature is enabled by host
-//     tud_remote_wakeup();
-//   } else {
-//     // send a report
-//     send_hid_report(keys_pressed);
-//   }
-// }
 
 // Invoked when sent REPORT successfully to host
 // Application can use this to send the next report
