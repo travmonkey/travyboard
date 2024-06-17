@@ -49,8 +49,8 @@ pico_enable_stdio_uart(slave 1)
 
 # In addition to pico_stdlib required for common PicoSDK functionality, add dependency on tinyusb_device
 # for TinyUSB device support and tinyusb_board for the additional board support library used by the example
-target_link_libraries(master PUBLIC pico_stdlib tinyusb_device tinyusb_board hardware_i2c)
-target_link_libraries(slave PUBLIC pico_stdlib tinyusb_device tinyusb_board hardware_i2c)
+target_link_libraries(master PUBLIC pico_stdlib tinyusb_device tinyusb_board hardware_i2c hardware_uart)
+target_link_libraries(slave PUBLIC pico_stdlib tinyusb_device tinyusb_board hardware_i2c hardware_uart)
 
 pico_add_extra_outputs(master)
 pico_add_extra_outputs(slave)

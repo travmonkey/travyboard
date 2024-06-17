@@ -28,11 +28,12 @@
 #include "class/hid/hid_device.h"
 #include "hardware/gpio.h"
 #include "hardware/uart.h"
+#include "keymap.hpp"
 #include "tusb.h"
 
 #include "encoder.hpp"
-#include "master.hpp"
 #include "keyboard.hpp"
+#include "master.hpp"
 #include "usb_descriptors.h"
 #include <cstdint>
 
@@ -46,13 +47,14 @@ static uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
 
 KeyBoard left_keyboard;
 KeyBoard right_keyboard;
+KeyMap left_keymaps("left");
 
 // Create rotary encoders
 RotaryEncoder horizontal_encoder(9, 8, 7);
 
 void uart_init() {
   uart_init(UART_ID, BAUD_RATE);
-  gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
+  // gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
   gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
 }
 
@@ -67,26 +69,27 @@ int main(void) {
   gpio_set_dir(2, GPIO_OUT);
   gpio_put(2, false);
 
-
   while (true) {
     tud_task(); // tinyusb device task
+    uint8_t test_keys[6] = {0};
+
+    uint8_t packet;
+    uint8_t mod = 0;
 
     // Task to manage the blinking of the onboard LED
     led_blinking_task();
-    left_keyboard.scan_buttons();
+    // left_keyboard.scan_buttons();
 
-    if (uart_is_readable(UART_ID)) {
-      bool data = false;
-      // uint8_t data[6] = {0};
-      data = uart_getc(UART_ID);
+    if (uart_is_readable_within_us(UART_ID, 1000)) {
+      mod = uart_getc(UART_ID);
+      packet = uart_getc(UART_ID);
+      uint8_t row = (packet >> 4);
+      uint8_t col = (packet & 0x0f);
 
-      if (data) {
-        gpio_put(2, true);
-      }
-
-      left_keyboard.handle_button_press();
+      gpio_put(2, true);
+      test_keys[0] = left_keymaps.return_keycode(row, col, mod);
+      left_keyboard.send_key(true, test_keys);
     }
-    
   }
 
   return 0;

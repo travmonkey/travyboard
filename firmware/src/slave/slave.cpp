@@ -28,27 +28,28 @@
 #include "device/usbd.h"
 #include "hardware/gpio.h"
 #include "hardware/uart.h"
+#include "keymap.hpp"
 #include "tusb.h"
 #include "tusb/usb_descriptors.h"
 
-#include "slave.hpp"
 #include "keyboard/keyboard.hpp"
+#include "slave.hpp"
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
-#include <vector>
 
 // Blink pattern
 static uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
 
 KeyBoard left_keyboard;
+KeyMap left_keymaps("left");
 
 // Function to initialize UART
 void init_uart() {
   uart_init(UART_ID, BAUD_RATE);
 
   gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
-  gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
+  // gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
 }
 
 int main() {
@@ -57,16 +58,42 @@ int main() {
   tusb_init();
   init_uart();
 
-  while(true) {
+  gpio_init(2);
+  gpio_set_dir(2, GPIO_OUT);
+  gpio_put(2, false);
+
+  gpio_init(17);
+  gpio_set_dir(17, GPIO_IN);
+  gpio_pull_up(17);
+  uint8_t row = 0;
+  uint8_t col = 1;
+
+  while (true) {
     tud_task(); // tinyusb device task
     led_blinking_task();
+    gpio_put(2, false);
+    
+    // uint8_t test_keys[6] = {0};
 
-    std::vector<std::vector<uint8_t>> keys;
+    uint8_t packet = (row << 4) + col;
+
+    if (!gpio_get(17)) {
+      gpio_put(2, true);
+      uart_putc_raw(UART_ID, 1);
+      uart_putc_raw(UART_ID, packet);
+      
+      // test_keys[0] = left_keymaps.return_keycode(0, 1, 0);
+      // test_keys[0] = HID_KEY_Q;
+      // left_keyboard.send_key(true, test_keys);
+    }
+
+    // uart_putc(UART_ID, test);
+
     // uint8_t keys = '\0';
     // left_keyboard.scan_buttons();
 
     // uart_putc(UART_ID, keys);
-    // sleep_ms(10);
+    sleep_ms(10);
   }
 
   return 0;
@@ -172,4 +199,3 @@ void led_blinking_task(void) {
   board_led_write(led_state);
   led_state = 1 - led_state; // toggle
 }
-
