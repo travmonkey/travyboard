@@ -28,7 +28,6 @@
 #include "device/usbd.h"
 #include "hardware/gpio.h"
 #include "hardware/uart.h"
-#include "keymap.hpp"
 #include "tusb.h"
 #include "tusb/usb_descriptors.h"
 
@@ -42,7 +41,6 @@
 static uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
 
 KeyBoard left_keyboard;
-KeyMap left_keymaps("left");
 
 // Function to initialize UART
 void init_uart() {
@@ -65,26 +63,26 @@ int main() {
   gpio_init(17);
   gpio_set_dir(17, GPIO_IN);
   gpio_pull_up(17);
-  uint8_t row = 0;
-  uint8_t col = 1;
+
+  Keys keys;
 
   while (true) {
     tud_task(); // tinyusb device task
     led_blinking_task();
-    gpio_put(2, false);
     
     // uint8_t test_keys[6] = {0};
 
-    uint8_t packet = (row << 4) + col;
+    
+    keys = left_keyboard.scan_pins();
+    
+    // mod = current_locations[0][2];
 
-    if (!gpio_get(17)) {
+    uint8_t packet = (keys[0].row << 4) + keys[0].col;
+    
+
+    if (keys[0].col == 1) {
       gpio_put(2, true);
-      uart_putc_raw(UART_ID, 1);
       uart_putc_raw(UART_ID, packet);
-      
-      // test_keys[0] = left_keymaps.return_keycode(0, 1, 0);
-      // test_keys[0] = HID_KEY_Q;
-      // left_keyboard.send_key(true, test_keys);
     }
 
     // uart_putc(UART_ID, test);
@@ -93,7 +91,6 @@ int main() {
     // left_keyboard.scan_buttons();
 
     // uart_putc(UART_ID, keys);
-    sleep_ms(10);
   }
 
   return 0;

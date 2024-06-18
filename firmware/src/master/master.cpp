@@ -71,25 +71,10 @@ int main(void) {
 
   while (true) {
     tud_task(); // tinyusb device task
-    uint8_t test_keys[6] = {0};
-
-    uint8_t packet;
-    uint8_t mod = 0;
-
+    
     // Task to manage the blinking of the onboard LED
     led_blinking_task();
-    // left_keyboard.scan_buttons();
-
-    if (uart_is_readable_within_us(UART_ID, 1000)) {
-      mod = uart_getc(UART_ID);
-      packet = uart_getc(UART_ID);
-      uint8_t row = (packet >> 4);
-      uint8_t col = (packet & 0x0f);
-
-      gpio_put(2, true);
-      test_keys[0] = left_keymaps.return_keycode(row, col, mod);
-      left_keyboard.send_key(true, test_keys);
-    }
+    left_keyboard.scan_buttons();
   }
 
   return 0;

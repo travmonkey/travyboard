@@ -23,7 +23,7 @@ KeyMap::KeyMap(const std::string &name) {
         {
             // ROW 1
             {HID_KEY_SHIFT_LEFT, '\0', '\0'},
-            {HID_KEY_A, HID_KEY_1, HID_KEY_F1, '\0'},
+            {HID_KEY_A, HID_KEY_2, HID_KEY_F1, '\0'},
             {'\0', '\0',  '\0', '\0'},
             {HID_KEY_D, HID_KEY_3, HID_KEY_F3, '\0'},
             {HID_KEY_F, HID_KEY_4, HID_KEY_F4, '\0'},

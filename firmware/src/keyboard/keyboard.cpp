@@ -4,7 +4,9 @@
 #include "bsp/board.h"
 #include "class/hid/hid_device.h"
 #include "hardware/gpio.h"
+#include "hardware/uart.h"
 #include "keymap.hpp"
+#include "master/master.hpp"
 #include "pico/time.h"
 #include "usb_descriptors.h"
 #include <cstdint>
@@ -27,7 +29,7 @@ KeyBoard::KeyBoard(void) {
   }
 }
 
-void KeyBoard::scan_buttons(void) {
+void KeyBoard::scan_buttons() {
   // Poll every 1ms
   const uint32_t interval_ms = 1;
   static uint32_t start_ms = 0;
@@ -47,6 +49,75 @@ void KeyBoard::scan_buttons(void) {
   uint total_keys = 0;
 
   // Set the current layer
+  // uint8_t layer = set_mod_layer();
+  uint8_t layer = 0;
+
+  // Loop over every row
+  for (uint8_t row = 0; row < sizeof(KeyBoard::ROW_PINS); row++) {
+    // Start scanning current row
+    gpio_put(KeyBoard::ROW_PINS[row], 1);
+    sleep_us(1); // Small delay for accuracy
+
+    // Loop over every column
+    for (uint8_t col = 0; col < sizeof(KeyBoard::COLUMN_PINS); col++) {
+      if (gpio_get(KeyBoard::COLUMN_PINS[col]) && total_keys < 6) {
+        // Scan columns and add the key to the current keys
+        current_keys[total_keys] = left_keymap.return_keycode(row, col, layer);
+        total_keys += 1;
+      }
+    }
+    // Stop scanning current row
+    gpio_put(KeyBoard::ROW_PINS[row], 0);
+  }
+
+  if (uart_is_readable(UART_ID) && total_keys < 6) {
+    gpio_put(2, true);
+    uint8_t packet = uart_getc(UART_ID);
+    uint8_t row = (packet >> 4);
+    uint8_t col = (packet & 0x0f);
+
+    uint8_t keycode = left_keymap.return_keycode(row, col, layer);
+
+    bool found = false;
+
+    for (uint8_t code : current_keys) {
+      if (code == keycode) {
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      current_keys[total_keys] = keycode;
+    }
+  }
+  if (!uart_is_readable(UART_ID)) {
+    gpio_put(2, false);
+  }
+
+  if (tud_hid_ready()) {
+    tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, current_keys);
+    memset(current_keys, 0, sizeof(current_keys));
+  }
+}
+
+Keys KeyBoard::scan_pins(void) {
+  // Poll every 1ms
+  const uint32_t interval_ms = 1;
+  static uint32_t start_ms = 0;
+
+  Keys keys;
+
+  // Check for time since last poll
+  if (board_millis() - start_ms < interval_ms) {
+    return keys; // not enough time
+  }
+  start_ms += interval_ms;
+
+  // Define the total amount of keys pressed. This is a max of 6
+  uint total_keys = 0;
+
+  // Set the current layer
   uint8_t layer = set_mod_layer();
 
   // Loop over every row
@@ -59,8 +130,9 @@ void KeyBoard::scan_buttons(void) {
     for (uint8_t col = 0; col < sizeof(KeyBoard::COLUMN_PINS); col++) {
       if (gpio_get(KeyBoard::COLUMN_PINS[col]) && total_keys < 6) {
         // Scan columns and add the key to the current keys
-        current_keys[total_keys] =
-            left_keymap.return_keycode(row, col, layer);
+        keys[total_keys].row = row;
+        keys[total_keys].col = col;
+        keys[total_keys].layer = layer;
         total_keys += 1;
       }
     }
@@ -69,7 +141,7 @@ void KeyBoard::scan_buttons(void) {
     gpio_put(KeyBoard::ROW_PINS[row], 0);
   }
 
-  KeyBoard::handle_button_press();
+  return keys;
 }
 
 bool KeyBoard::scan_left_mod(void) {
@@ -102,45 +174,3 @@ uint8_t KeyBoard::set_mod_layer(void) {
   }
   return 0; // Return default (0) layer
 };
-
-void KeyBoard::handle_button_press() {
-  // Handle debouncing
-  static uint64_t lastPressTime = 0;
-  uint64_t currentTime = time_us_64();
-
-  if (currentTime - lastPressTime < DEBOUNCE_TIME) {
-    return;
-  }
-  lastPressTime = currentTime;
-
-  // Check if either row is recieving input
-  for (size_t i = 0; i < 2; i++) {
-    if (gpio_get(ROW_PINS[i]) == 0) {
-      // Send list of keys pressed
-      KeyBoard::send_key(true, current_keys);
-    } else {
-      KeyBoard::send_key(false, current_keys);
-    }
-  }
-}
-
-void KeyBoard::send_key(bool keys_pressed, uint8_t keys[6]) {
-  // skip if hid is not ready yet
-  if (!tud_hid_ready()) {
-    return;
-  }
-
-  // avoid sending multiple zero reports
-  static bool send_empty = false;
-
-  if (keys_pressed) {
-    tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, keys);
-    send_empty = true;
-  } else {
-    // send empty key report if previously has key pressed
-    if (send_empty) {
-      tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, NULL);
-    }
-    send_empty = false;
-  }
-}
