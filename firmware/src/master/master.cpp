@@ -28,7 +28,6 @@
 #include "class/hid/hid_device.h"
 #include "hardware/gpio.h"
 #include "hardware/uart.h"
-#include "keymap.hpp"
 #include "tusb.h"
 
 #include "encoder.hpp"
@@ -45,9 +44,7 @@
 static uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
 // static uint8_t current_keys[6] = {0};
 
-KeyBoard left_keyboard;
-KeyBoard right_keyboard;
-KeyMap left_keymaps("left");
+KeyBoard keyboard;
 
 // Create rotary encoders
 RotaryEncoder horizontal_encoder(9, 8, 7);
@@ -74,7 +71,7 @@ int main(void) {
     
     // Task to manage the blinking of the onboard LED
     led_blinking_task();
-    left_keyboard.scan_buttons();
+    keyboard.scan_buttons();
   }
 
   return 0;

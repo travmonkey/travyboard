@@ -31,7 +31,7 @@
 #include "tusb.h"
 #include "tusb/usb_descriptors.h"
 
-#include "keyboard/keyboard.hpp"
+#include "keyboard.hpp"
 #include "slave.hpp"
 #include <cstdint>
 #include <cstdio>
@@ -69,28 +69,15 @@ int main() {
   while (true) {
     tud_task(); // tinyusb device task
     led_blinking_task();
-    
-    // uint8_t test_keys[6] = {0};
 
-    
     keys = left_keyboard.scan_pins();
-    
-    // mod = current_locations[0][2];
 
-    uint8_t packet = (keys[0].row << 4) + keys[0].col;
-    
-
-    if (keys[0].col == 1) {
-      gpio_put(2, true);
-      uart_putc_raw(UART_ID, packet);
+    if (keys[0].row != NULL_VALUE) {
+      for (uint8_t key = 0; key < 6; key++) {
+        uint8_t packet = (keys[key].row << 4) + keys[key].col;
+        uart_putc_raw(UART_ID, packet);
+      }
     }
-
-    // uart_putc(UART_ID, test);
-
-    // uint8_t keys = '\0';
-    // left_keyboard.scan_buttons();
-
-    // uart_putc(UART_ID, keys);
   }
 
   return 0;

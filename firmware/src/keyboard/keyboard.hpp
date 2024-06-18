@@ -10,6 +10,8 @@
 #define RIGHT_MOD_ROW_PIN 15
 #define RIGHT_MOD_COLUMN_PIN 11
 
+#define NULL_VALUE 255
+
 #define DEBOUNCE_TIME 15
 
 static uint8_t current_keys[6];
@@ -20,7 +22,7 @@ struct KeyPress {
   uint8_t col;
   uint8_t layer;
 
-  KeyPress() : row(0), col(0), layer(0) {}
+  KeyPress() : row(NULL_VALUE), col(NULL_VALUE), layer(NULL_VALUE) {}
 };
 
 struct Keys {

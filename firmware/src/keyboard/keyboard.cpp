@@ -31,7 +31,7 @@ KeyBoard::KeyBoard(void) {
 
 void KeyBoard::scan_buttons() {
   // Poll every 1ms
-  const uint32_t interval_ms = 1;
+  const uint32_t interval_ms = 10;
   static uint32_t start_ms = 0;
 
   // Check for time since last poll
@@ -70,7 +70,7 @@ void KeyBoard::scan_buttons() {
     gpio_put(KeyBoard::ROW_PINS[row], 0);
   }
 
-  if (uart_is_readable(UART_ID) && total_keys < 6) {
+  while (uart_is_readable(UART_ID) && total_keys < 6) {
     gpio_put(2, true);
     uint8_t packet = uart_getc(UART_ID);
     uint8_t row = (packet >> 4);
@@ -89,11 +89,10 @@ void KeyBoard::scan_buttons() {
 
     if (!found) {
       current_keys[total_keys] = keycode;
+      total_keys++;
     }
   }
-  if (!uart_is_readable(UART_ID)) {
-    gpio_put(2, false);
-  }
+  gpio_put(2, false);
 
   if (tud_hid_ready()) {
     tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, current_keys);
@@ -103,7 +102,7 @@ void KeyBoard::scan_buttons() {
 
 Keys KeyBoard::scan_pins(void) {
   // Poll every 1ms
-  const uint32_t interval_ms = 1;
+  const uint32_t interval_ms = 5;
   static uint32_t start_ms = 0;
 
   Keys keys;
