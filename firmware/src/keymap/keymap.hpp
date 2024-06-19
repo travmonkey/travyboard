@@ -19,15 +19,13 @@ public:
   // Constructor allowing both left and right to be defined
   KeyMap(const std::string &name);
 
-  // function to refresh the keyboard
-  void refresh();
-
+  // Function to create the keymap array from the constructor
   void create_keymaps(uint8_t keys[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS]);
 
+  // Return the keycode
   uint8_t return_keycode(uint8_t row, uint8_t column, uint8_t layer);
 
-  // List to store the keycodes for the next send
-  uint8_t key_codes[6] = {0};
+  bool is_layer_key(uint8_t row, uint8_t column);
 };
 
 #endif // KEYMAP_H

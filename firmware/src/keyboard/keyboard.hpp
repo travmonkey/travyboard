@@ -22,6 +22,7 @@
 #define UART_RX_PIN 1
 
 static uint8_t current_keys[6];
+static int total_keys;
 
 // LEGENDARY JADEN CROW SOLUTION
 struct KeyPress {
@@ -46,18 +47,22 @@ class KeyBoard {
 private:
   bool scan_left_mod(void);
   bool scan_right_mod(void);
+
   uint8_t set_mod_layer(void);
 
-public:
+  void handle_uart(void);
+
   constexpr static uint8_t LEFT_ROW_PINS[2] = {14, 15};
   constexpr static uint8_t LEFT_COLUMN_PINS[3] = {11, 12, 13};
   constexpr static uint8_t RIGHT_ROW_PINS[2] = {14, 15};
   constexpr static uint8_t RIGHT_COLUMN_PINS[3] = {11, 12, 13};
 
-  KeyBoard(const std::string &name);
-  void scan_buttons();
+public:
 
+  KeyBoard(const std::string &name);
+  void scan_buttons(void);
   Keys scan_pins(void);
+
 };
 
 #endif // KEYBOARD_H

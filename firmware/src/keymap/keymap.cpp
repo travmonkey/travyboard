@@ -2,7 +2,6 @@
 
 #include "keymap.hpp"
 #include "class/hid/hid.h"
-#include <cstddef>
 #include <cstdint>
 
 KeyMap::KeyMap(const std::string &name) {
@@ -106,13 +105,13 @@ void KeyMap::create_keymaps(uint8_t keys[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS]) {
   }
 }
 
-uint8_t KeyMap::return_keycode(uint8_t row, uint8_t column, uint8_t layer) {
-  return keymap[row][column][layer];
+bool KeyMap::is_layer_key(uint8_t row, uint8_t column) {
+  if (KeyMap::return_keycode(row, column, 0) == 1) {
+    return true;
+  }
+  return false;
 }
 
-void KeyMap::refresh() {
-  // First clear the key code cache from the previous send
-  for (size_t i = 0; i < 6; i++) {
-    KeyMap::key_codes[i] = 0;
-  }
+uint8_t KeyMap::return_keycode(uint8_t row, uint8_t column, uint8_t layer) {
+  return keymap[row][column][layer];
 }

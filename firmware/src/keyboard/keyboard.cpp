@@ -59,12 +59,14 @@ void KeyBoard::scan_buttons() {
     current_keys[i] = 0;
   }
 
-  // Define the total amount of keys pressed. This is a max of 6
-  uint total_keys = 0;
+  // Reset the total amount of keys pressed. This is a max of 6
+  total_keys = 0;
 
   // Set the current layer
   // uint8_t layer = set_mod_layer();
   uint8_t layer = 0;
+
+  handle_uart();
 
   // Loop over every row
   for (uint8_t row = 0; row < sizeof(KeyBoard::RIGHT_ROW_PINS); row++) {
@@ -84,14 +86,24 @@ void KeyBoard::scan_buttons() {
     gpio_put(KeyBoard::RIGHT_ROW_PINS[row], 0);
   }
 
+  // Send the array of keypresses
+  if (tud_hid_ready()) {
+    tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, current_keys);
+    // Make sure memory is completely clear just in case
+    memset(current_keys, 0, sizeof(current_keys));
+  }
+}
+
+void KeyBoard::handle_uart(void) {
   // While loop to recieve everything in buffer, or until max keystrokes is hit
   while (uart_is_readable(UART_ID) && total_keys < 6) {
     // Recieve first in the buffer from uart
     uint8_t packet = uart_getc(UART_ID);
-    uint8_t row = (packet >> 4); // Bitshift to get row value
+    uint8_t row = (packet >> 4);   // Bitshift to get row value
     uint8_t col = (packet & 0x0f); // & 0x0f returns the col value
 
-    uint8_t keycode = left_keymap.return_keycode(row, col, layer); // set keycode in variable
+    uint8_t keycode =
+        left_keymap.return_keycode(row, col, 0); // set keycode in variable
 
     // Loop to ensure that the same key doesn't get added twice into single send
     bool found = false;
@@ -107,13 +119,6 @@ void KeyBoard::scan_buttons() {
       current_keys[total_keys] = keycode;
       total_keys++;
     }
-  }
-
-  // Send the array of keypresses
-  if (tud_hid_ready()) {
-    tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, current_keys);
-    // Make sure memory is completely clear just in case
-    memset(current_keys, 0, sizeof(current_keys));
   }
 }
 
