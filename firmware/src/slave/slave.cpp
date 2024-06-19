@@ -32,18 +32,26 @@
 #include "tusb/usb_descriptors.h"
 
 #include "keyboard.hpp"
-#include "slave.hpp"
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
 
 // Blink pattern
+enum {
+  BLINK_NOT_MOUNTED = 250, // device not mounted
+  BLINK_MOUNTED = 1000,    // device mounted
+  BLINK_SUSPENDED = 2500,  // device is suspended
+};
+
+// Blink pattern
 static uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
 
-KeyBoard left_keyboard;
+void led_blinking_task(void); // Function prototype
+
+KeyBoard left_keyboard("left"); // create left keyboard object
 
 // Function to initialize UART
-void init_uart() {
+void uart_init() {
   uart_init(UART_ID, BAUD_RATE);
 
   gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
@@ -51,31 +59,31 @@ void init_uart() {
 }
 
 int main() {
-  // Initialize the board and TinyUsb
+  // Initialize board, tinyUSB, and uart
   board_init();
   tusb_init();
-  init_uart();
+  uart_init();
 
   gpio_init(2);
   gpio_set_dir(2, GPIO_OUT);
   gpio_put(2, false);
 
-  gpio_init(17);
-  gpio_set_dir(17, GPIO_IN);
-  gpio_pull_up(17);
-
   Keys keys;
 
   while (true) {
     tud_task(); // tinyusb device task
-    led_blinking_task();
+    led_blinking_task(); // task to set blink rate
 
+    // Scan key array and return current rows and columns in struct keys
     keys = left_keyboard.scan_pins();
 
+    // Send the rows and columns over uart
     for (uint8_t key = 0; key < 6; key++) {
+      // make sure that the key isn't null
       if (keys[key].row != NULL_VALUE) {
+        // Bitshift the row by 4 and add col to compress the keys into a single packet
         uint8_t packet = (keys[key].row << 4) + keys[key].col;
-        uart_putc_raw(UART_ID, packet);
+        uart_putc_raw(UART_ID, packet); // Send compressed packet
       }
     }
   }

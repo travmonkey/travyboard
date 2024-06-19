@@ -4,6 +4,7 @@
 #define KEYBOARD_H
 
 #include <cstdint>
+#include <string>
 
 #define LEFT_MOD_ROW_PIN 15
 #define LEFT_MOD_COLUMN_PIN 13
@@ -13,6 +14,12 @@
 #define NULL_VALUE 255
 
 #define DEBOUNCE_TIME 15
+
+// Uart definitions
+#define UART_ID uart0
+#define BAUD_RATE 9600
+#define UART_TX_PIN 0
+#define UART_RX_PIN 1
 
 static uint8_t current_keys[6];
 
@@ -42,10 +49,12 @@ private:
   uint8_t set_mod_layer(void);
 
 public:
-  constexpr static uint8_t ROW_PINS[2] = {14, 15};
-  constexpr static uint8_t COLUMN_PINS[3] = {11, 12, 13};
+  constexpr static uint8_t LEFT_ROW_PINS[2] = {14, 15};
+  constexpr static uint8_t LEFT_COLUMN_PINS[3] = {11, 12, 13};
+  constexpr static uint8_t RIGHT_ROW_PINS[2] = {14, 15};
+  constexpr static uint8_t RIGHT_COLUMN_PINS[3] = {11, 12, 13};
 
-  KeyBoard(void);
+  KeyBoard(const std::string &name);
   void scan_buttons();
 
   Keys scan_pins(void);

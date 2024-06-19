@@ -32,7 +32,6 @@
 
 #include "encoder.hpp"
 #include "keyboard.hpp"
-#include "master.hpp"
 #include "usb_descriptors.h"
 #include <cstdint>
 
@@ -41,14 +40,23 @@
 //--------------------------------------------------------------------+
 
 // Blink pattern
-static uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
-// static uint8_t current_keys[6] = {0};
+enum {
+  BLINK_NOT_MOUNTED = 250, // device not mounted
+  BLINK_MOUNTED = 1000,    // device mounted
+  BLINK_SUSPENDED = 2500,  // device is suspended
+};
 
-KeyBoard keyboard;
+// Blink pattern
+static uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
+
+void led_blinking_task(void); // define function prototype
+
+KeyBoard keyboard("right"); // create right keyboard object
 
 // Create rotary encoders
 RotaryEncoder horizontal_encoder(9, 8, 7);
 
+// Function to initialize uart
 void uart_init() {
   uart_init(UART_ID, BAUD_RATE);
   // gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
