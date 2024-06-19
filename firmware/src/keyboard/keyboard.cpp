@@ -53,8 +53,8 @@ KeyBoard::KeyBoard(const std::string &name) {
 }
 
 void KeyBoard::scan_buttons() {
-  // Poll every 10ms
-  const uint32_t interval_ms = 10;
+  // Poll every 1ms
+  const uint32_t interval_ms = 1;
   static uint32_t start_ms = 0;
 
   // Check for time since last poll
@@ -190,8 +190,8 @@ void KeyBoard::send_keypress(uint8_t layer) {
 }
 
 Keys KeyBoard::scan_pins(void) {
-  // Poll every 5ms
-  const uint32_t interval_ms = 5;
+  // Poll every 1ms
+  const uint32_t interval_ms = 1;
   static uint32_t start_ms = 0;
 
   Keys keys;
