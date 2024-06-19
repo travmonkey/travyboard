@@ -21,16 +21,16 @@
 #define UART_TX_PIN 0
 #define UART_RX_PIN 1
 
-static uint8_t current_keys[6];
-static int total_keys;
+// Left and Right half definitions, out of index for possible key array
+#define LEFT_HALF 253
+#define RIGHT_HALF 254
 
 // LEGENDARY JADEN CROW SOLUTION
 struct KeyPress {
   uint8_t row;
   uint8_t col;
-  uint8_t layer;
 
-  KeyPress() : row(NULL_VALUE), col(NULL_VALUE), layer(NULL_VALUE) {}
+  KeyPress() : row(NULL_VALUE), col(NULL_VALUE) {}
 };
 
 struct Keys {
@@ -45,12 +45,17 @@ struct Keys {
 
 class KeyBoard {
 private:
-  bool scan_left_mod(void);
-  bool scan_right_mod(void);
-
   uint8_t set_mod_layer(void);
 
   void handle_uart(void);
+
+  void button_handler(uint8_t row, uint8_t col, char half);
+
+  void send_keypress(uint8_t layer);
+
+  uint8_t check_layer(void);
+
+  void refresh(void);
 
   constexpr static uint8_t LEFT_ROW_PINS[2] = {14, 15};
   constexpr static uint8_t LEFT_COLUMN_PINS[3] = {11, 12, 13};
@@ -58,11 +63,9 @@ private:
   constexpr static uint8_t RIGHT_COLUMN_PINS[3] = {11, 12, 13};
 
 public:
-
   KeyBoard(const std::string &name);
   void scan_buttons(void);
   Keys scan_pins(void);
-
 };
 
 #endif // KEYBOARD_H

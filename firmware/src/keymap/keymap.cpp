@@ -11,8 +11,8 @@ KeyMap::KeyMap(const std::string &name) {
     uint8_t keys[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS] = {
         {
             // ROW 0
-            {HID_KEY_TAB, HID_KEY_ESCAPE, HID_KEY_GRAVE, '\0'},
-            {HID_KEY_Q, HID_KEY_1, HID_KEY_P, HID_KEY_F1},
+            {2, 2, 2, 2},
+            {HID_KEY_Q, HID_KEY_1, HID_KEY_2, HID_KEY_3},
             {HID_KEY_W, HID_KEY_2, HID_KEY_F2, HID_KEY_F2},
             {HID_KEY_E, HID_KEY_3, HID_KEY_F3, HID_KEY_F3},
             {HID_KEY_R, HID_KEY_4, HID_KEY_F4, HID_KEY_F4},
@@ -21,9 +21,9 @@ KeyMap::KeyMap(const std::string &name) {
         },
         {
             // ROW 1
-            {HID_KEY_SHIFT_LEFT, '\0', '\0', HID_KEY_CAPS_LOCK},
+            {HID_KEY_SHIFT_LEFT, HID_KEY_SHIFT_LEFT, HID_KEY_SHIFT_LEFT, HID_KEY_SHIFT_LEFT},
             {HID_KEY_A, '\0', '\0', '\0'},
-            {HID_KEY_S, '\0',  '\0', '\0'},
+            {1, 1, 1, 1},
             {HID_KEY_D, '\0', '\0', '\0'},
             {HID_KEY_F, '\0', '\0', '\0'},
             {HID_KEY_G, '\0', '\0', '\0'},
@@ -45,7 +45,7 @@ KeyMap::KeyMap(const std::string &name) {
             {'\0', '\0', '\0', '\0'}, // Empty - No key here
             {'\0', '\0', '\0', '\0'}, // Empty - No key here
             {HID_KEY_MENU, '\0', HID_KEY_ALT_LEFT, '\0'},
-            {'\0', '\0', '\0', '\0'}, // Modifier key
+            {1, 1, 1, 1}, // Modifier key
             {HID_KEY_SPACE, HID_KEY_SPACE, HID_KEY_SPACE, HID_KEY_SPACE},
         },
     };
@@ -78,11 +78,11 @@ KeyMap::KeyMap(const std::string &name) {
             {HID_KEY_COMMA, '\0', '\0', '\0'},
             {HID_KEY_PERIOD, '\0', '\0', '\0'},
             {HID_KEY_SLASH, '\0', '\0', '\0'},
-            {HID_KEY_SHIFT_RIGHT, '\0', '\0', '\0'},
+            {HID_KEY_SHIFT_RIGHT, HID_KEY_SHIFT_RIGHT, HID_KEY_SHIFT_RIGHT, HID_KEY_SHIFT_RIGHT},
         },
         {
             {HID_KEY_MENU, HID_KEY_ALT_RIGHT, '\0', '\0'},
-            {'\0', '\0', '\0', '\0'}, // Modifier key
+            {2, 2, 2, 2}, // Modifier key
             {HID_KEY_SPACE, HID_KEY_SPACE, HID_KEY_SPACE, HID_KEY_SPACE},
             {'\0', '\0', '\0', '\0'}, // Empty - No key here
             {'\0', '\0', '\0', '\0'}, // Empty - No key here
