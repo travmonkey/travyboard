@@ -72,8 +72,8 @@ int main() {
 
     keys = left_keyboard.scan_pins();
 
-    if (keys[0].row != NULL_VALUE) {
-      for (uint8_t key = 0; key < 6; key++) {
+    for (uint8_t key = 0; key < 6; key++) {
+      if (keys[key].row != NULL_VALUE) {
         uint8_t packet = (keys[key].row << 4) + keys[key].col;
         uart_putc_raw(UART_ID, packet);
       }
