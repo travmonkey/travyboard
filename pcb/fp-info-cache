@@ -1,4 +1,4 @@
-23823938993212988
+23832822897183145
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -97117,3 +97117,17 @@ MX,cherry,gateron,kailh,pg1511,stabilizer,stab
 0
 0
 0
+oled
+SSD1306-0.91-OLED-4pin-128x32
+
+
+0
+4
+4
+usbc
+TYPE-C-31-M-13C
+USB Type-C receptacle for USB 2.0 and PD, http://www.krhro.com/uploads/soft/180320/1-1P320120243.pdf
+usb usb-c 2.0 pd
+0
+20
+17
