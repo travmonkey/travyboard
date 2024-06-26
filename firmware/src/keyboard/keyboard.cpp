@@ -2,7 +2,6 @@
 
 #include "keyboard.hpp"
 #include "bsp/board.h"
-#include "class/hid/hid_device.h"
 #include "hardware/gpio.h"
 #include "hardware/uart.h"
 #include "keymap.hpp"
@@ -83,7 +82,7 @@ void KeyBoard::scan_buttons() {
     gpio_put(KeyBoard::RIGHT_ROW_PINS[row], 0);
   }
 
-  send_keypress(check_layer()); // Send the keypress with current layer
+  send_keyboard_report(check_layer()); // Send the keypress with current layer
 }
 
 void KeyBoard::button_handler(uint8_t row, uint8_t col, char half) {
@@ -142,7 +141,7 @@ uint8_t KeyBoard::check_layer(void) {
   return 0; // Return default layer if both false
 }
 
-void KeyBoard::send_keypress(uint8_t layer) {
+void KeyBoard::send_keyboard_report(uint8_t layer) {
   // Send keypresses for held keys
   uint8_t keycode; // Initialize keycode variable
   // Loop through all of the held keys
@@ -248,3 +247,4 @@ void KeyBoard::refresh(void) {
   left_layer = false;
   right_layer = false;
 }
+

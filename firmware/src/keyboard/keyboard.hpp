@@ -51,7 +51,7 @@ private:
 
   void button_handler(uint8_t row, uint8_t col, char half);
 
-  void send_keypress(uint8_t layer);
+  void send_keyboard_report(uint8_t layer);
 
   uint8_t check_layer(void);
 
