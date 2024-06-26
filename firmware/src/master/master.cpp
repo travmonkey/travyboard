@@ -63,6 +63,24 @@ void uart_init() {
   gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
 }
 
+void send_mouse_report() {
+  // Poll every 1ms
+  const uint32_t interval_ms = 1;
+  static uint32_t start_ms = 0;
+
+  int8_t const delta = 5;
+
+  // Check for time since last poll
+  if (board_millis() - start_ms < interval_ms) {
+    return; // not enough time
+  }
+  start_ms += interval_ms;
+  if (!tud_hid_ready())
+    return;
+
+  tud_hid_mouse_report(REPORT_ID_MOUSE, 0x00, delta, delta, 0, 0);
+}
+
 /*------------- MAIN -------------*/
 int main(void) {
   // Initialize the board and TinyUsb
@@ -76,10 +94,17 @@ int main(void) {
 
   while (true) {
     tud_task(); // tinyusb device task
-    
+
     // Task to manage the blinking of the onboard LED
     led_blinking_task();
-    keyboard.scan_buttons();
+    horizontal_encoder.listen();
+    // keyboard.scan_buttons();
+    if (horizontal_encoder.get_position() > 0) {
+      send_mouse_report();
+    } else if (horizontal_encoder.get_position() < 0) {
+      send_mouse_report();
+    }
+    horizontal_encoder.reset_position();
   }
 
   return 0;
