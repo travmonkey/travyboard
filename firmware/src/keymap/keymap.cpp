@@ -12,7 +12,7 @@ KeyMap::KeyMap(const std::string &name) {
         {
             // ROW 0
             {2, 2, 2, 2},
-            {HID_KEY_Q, HID_KEY_1, HID_KEY_2, HID_KEY_3},
+            {HID_KEY_Q, HID_KEY_1, HID_KEY_F2, HID_KEY_3},
             {HID_KEY_W, HID_KEY_2, HID_KEY_F2, HID_KEY_F2},
             {HID_KEY_E, HID_KEY_3, HID_KEY_F3, HID_KEY_F3},
             {HID_KEY_R, HID_KEY_4, HID_KEY_F4, HID_KEY_F4},

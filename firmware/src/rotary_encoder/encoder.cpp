@@ -17,15 +17,15 @@ RotaryEncoder::RotaryEncoder(uint clk, uint dt, uint sw)
   // Initialize encoder pins and pull them up
   gpio_init(ENCODER_CLK);
   gpio_set_dir(ENCODER_CLK, GPIO_IN);
-  gpio_pull_up(ENCODER_CLK);
+  gpio_disable_pulls(ENCODER_CLK);
 
   gpio_init(ENCODER_DT);
   gpio_set_dir(ENCODER_DT, GPIO_IN);
-  gpio_pull_up(ENCODER_DT);
+  gpio_disable_pulls(ENCODER_DT);
 
   gpio_init(ENCODER_SW);
   gpio_set_dir(ENCODER_SW, GPIO_IN);
-  gpio_pull_up(ENCODER_SW);
+  gpio_disable_pulls(ENCODER_SW);
 
   // Initialize callback handling
   gpio_set_irq_enabled_with_callback(ENCODER_CLK,

@@ -63,12 +63,10 @@ void uart_init() {
   gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
 }
 
-void send_mouse_report() {
+void send_mouse_report(int8_t vertical, int8_t horizontal) {
   // Poll every 1ms
   const uint32_t interval_ms = 1;
   static uint32_t start_ms = 0;
-
-  int8_t const delta = 5;
 
   // Check for time since last poll
   if (board_millis() - start_ms < interval_ms) {
@@ -78,7 +76,7 @@ void send_mouse_report() {
   if (!tud_hid_ready())
     return;
 
-  tud_hid_mouse_report(REPORT_ID_MOUSE, 0x00, delta, delta, 0, 0);
+  tud_hid_mouse_report(REPORT_ID_MOUSE, 0x00, vertical, horizontal, 0, 0);
 }
 
 /*------------- MAIN -------------*/
@@ -97,12 +95,12 @@ int main(void) {
 
     // Task to manage the blinking of the onboard LED
     led_blinking_task();
-    horizontal_encoder.listen();
     // keyboard.scan_buttons();
-    if (horizontal_encoder.get_position() > 0) {
-      send_mouse_report();
-    } else if (horizontal_encoder.get_position() < 0) {
-      send_mouse_report();
+    int encoder_position = horizontal_encoder.get_position();
+    if (encoder_position > 0) {
+      send_mouse_report(0, 5);
+    } else if (encoder_position < 0) {
+      send_mouse_report(0, -5);
     }
     horizontal_encoder.reset_position();
   }
