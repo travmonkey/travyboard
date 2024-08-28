@@ -547,6 +547,7 @@
 		(property "Value" "OLED"
 			(at 18.5 14 90)
 			(layer "F.Fab")
+			(hide yes)
 			(uuid "8a6fbcb1-92f5-4d02-aba1-633c83db7ed8")
 			(effects
 				(font
@@ -4201,7 +4202,7 @@
 	(footprint "audio-jacks:PJ-399B-6A"
 		(layer "F.Cu")
 		(uuid "1dd5d95c-fc02-49a2-99b6-8033d4290ab6")
-		(at 216.951749 85.39695 90)
+		(at 225.874024 82.748368 90)
 		(tags "usb usb-c 2.0 pd")
 		(property "Reference" "J2"
 			(at 0 14.65 90)
@@ -9254,6 +9255,7 @@
 		(property "Value" "OLED"
 			(at 18.5 14 90)
 			(layer "F.Fab")
+			(hide yes)
 			(uuid "5f80dddb-9417-46bf-9a3b-873c3521c912")
 			(effects
 				(font
@@ -14316,7 +14318,7 @@
 	(footprint "usbc:TYPE-C-31-M-13C"
 		(layer "F.Cu")
 		(uuid "89cadc44-0457-477b-9bc7-b966c6eee87d")
-		(at 234.553322 27.400024 180)
+		(at 234.81512 27.477415 180)
 		(descr "USB Type-C receptacle for USB 2.0 and PD, http://www.krhro.com/uploads/soft/180320/1-1P320120243.pdf")
 		(tags "usb usb-c 2.0 pd")
 		(property "Reference" "J3"
@@ -28578,7 +28580,7 @@
 	(footprint "encoders:PEC12R-4220F-20024"
 		(layer "F.Cu")
 		(uuid "f4d5f4a5-a55f-40a1-983f-8879353cc0ea")
-		(at 230.981444 100.607897 23.88)
+		(at 236.88703 97.305086 23.88)
 		(property "Reference" "SW47"
 			(at 0 -0.499999 23.88)
 			(unlocked yes)
@@ -67632,6 +67634,16 @@
 		(uuid "08181c2c-6374-4c99-9d9f-d2c927d8d1d3")
 	)
 	(gr_line
+		(start 218.77716 80.36712)
+		(end 227.409184 77.092904)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "08187073-0a5e-4193-a9c7-89f50b52d709")
+	)
+	(gr_line
 		(start 337.542471 23.812521)
 		(end 320.873707 23.812521)
 		(stroke
@@ -67734,6 +67746,17 @@
 		(layer "Edge.Cuts")
 		(uuid "35285acb-9f66-4509-ae62-a84582ab29de")
 	)
+	(gr_arc
+		(start 227.409566 26.789085)
+		(mid 227.583929 26.368135)
+		(end 228.004879 26.193772)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "38103b3e-f3f4-4540-96a1-4ae9c220fc1d")
+	)
 	(gr_line
 		(start 252.805707 115.666765)
 		(end 252.37872 114.710204)
@@ -67775,16 +67798,6 @@
 		)
 		(layer "Edge.Cuts")
 		(uuid "42957da3-c745-4e06-8e8f-9143cff6e02b")
-	)
-	(gr_line
-		(start 216.870497 82.248122)
-		(end 230.386131 82.248122)
-		(stroke
-			(width 0.05)
-			(type default)
-		)
-		(layer "Edge.Cuts")
-		(uuid "44281983-000c-46b8-bc92-ade22a4bda0e")
 	)
 	(gr_arc
 		(start 279.201797 25.003147)
@@ -68016,8 +68029,8 @@
 		(uuid "7ca377d1-6736-4335-9e88-7e08dfec5c81")
 	)
 	(gr_line
-		(start 213.122054 27.979711)
-		(end 213.122054 80.856873)
+		(start 227.409184 26.789085)
+		(end 227.409184 77.092904)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -68057,6 +68070,16 @@
 		(layer "Edge.Cuts")
 		(uuid "9101751a-5a04-4634-b290-449bb7962687")
 	)
+	(gr_line
+		(start 216.870497 88.552809)
+		(end 218.77716 80.36712)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "915fceae-1557-4c2b-9cb6-531803f3913b")
+	)
 	(gr_arc
 		(start 16.668764 29.765651)
 		(mid 17.017495 28.92375)
@@ -68069,7 +68092,7 @@
 		(uuid "924e1b23-c47e-441e-9001-dc1f2ce9a3b4")
 	)
 	(gr_line
-		(start 214.907993 26.193772)
+		(start 228.004879 26.193772)
 		(end 278.011171 26.193773)
 		(stroke
 			(width 0.05)
@@ -68141,17 +68164,6 @@
 		(layer "Edge.Cuts")
 		(uuid "a0836ff7-2e6e-4dd7-86ca-4f04d8b93f9e")
 	)
-	(gr_arc
-		(start 213.122054 27.979711)
-		(mid 213.645148 26.716867)
-		(end 214.907993 26.193772)
-		(stroke
-			(width 0.05)
-			(type default)
-		)
-		(layer "Edge.Cuts")
-		(uuid "a361a340-0ffc-4ede-bec3-72e10f32aebc")
-	)
 	(gr_line
 		(start 54.768796 27.384399)
 		(end 54.768796 25.003147)
@@ -68193,16 +68205,6 @@
 		)
 		(layer "Edge.Cuts")
 		(uuid "b5715365-2219-49c1-8314-6926c79d1e63")
-	)
-	(gr_line
-		(start 216.870497 88.552809)
-		(end 230.389255 88.552809)
-		(stroke
-			(width 0.05)
-			(type default)
-		)
-		(layer "Edge.Cuts")
-		(uuid "b8a33c89-08b9-4ce2-989a-23579bf6783d")
 	)
 	(gr_line
 		(start 160.117566 110.181995)
@@ -68265,16 +68267,6 @@
 		)
 		(layer "Edge.Cuts")
 		(uuid "c6895489-82f0-4215-8dc1-15c70a524473")
-	)
-	(gr_line
-		(start 230.389255 88.552809)
-		(end 230.386131 82.248122)
-		(stroke
-			(width 0.05)
-			(type default)
-		)
-		(layer "Edge.Cuts")
-		(uuid "cdd1d0e8-773f-4f29-9bdf-f6cf5d6acfe6")
 	)
 	(gr_line
 		(start 58.340674 83.343821)
@@ -68451,15 +68443,5 @@
 		)
 		(layer "Edge.Cuts")
 		(uuid "f52fea12-030a-4cfc-9707-e9e05414058f")
-	)
-	(gr_line
-		(start 213.122054 80.856873)
-		(end 216.870497 82.248122)
-		(stroke
-			(width 0.05)
-			(type default)
-		)
-		(layer "Edge.Cuts")
-		(uuid "fc51222e-20f5-44ca-915e-197b96f81988")
 	)
 )
