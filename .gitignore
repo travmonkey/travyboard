@@ -5,5 +5,7 @@ firmware/.cache/*
 # Ignore kicad lockfiles
 *.lck
 
+.ccls-cache
+
 # Ignore mac bullshit
 .DS_STORE
