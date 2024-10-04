@@ -43,12 +43,17 @@ enum {
   BLINK_SUSPENDED = 2500,  // device is suspended
 };
 
+enum {
+  LEFT = 0,
+  RIGHT = 1
+};
+
 // Blink pattern
 static uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
 
 void led_blinking_task(void); // Function prototype
 
-KeyBoard left_keyboard("left"); // create left keyboard object
+KeyBoard left_keyboard(LEFT); // create left keyboard object
 
 // Function to initialize UART
 void uart_init() {

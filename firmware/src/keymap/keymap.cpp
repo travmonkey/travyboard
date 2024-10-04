@@ -4,9 +4,14 @@
 #include "class/hid/hid.h"
 #include <cstdint>
 
-KeyMap::KeyMap(const std::string &name) {
+enum {
+  LEFT = 0,
+  RIGHT = 1
+};
+
+KeyMap::KeyMap(const std::uint8_t &name) {
   // Initialize all of the keys depending on which half is stated
-  if (name == "left") {
+  if (name == LEFT) {
     // Initialize the left half of keys
     uint8_t keys[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS] = {
         {
@@ -50,7 +55,7 @@ KeyMap::KeyMap(const std::string &name) {
         },
     };
     create_keymaps(keys);
-  } else if (name == "right") {
+  } else if (name == RIGHT) {
     // Initialize the right half of keys
     uint8_t keys[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS] = {
         {

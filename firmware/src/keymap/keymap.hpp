@@ -17,7 +17,7 @@ private:
 
 public:
   // Constructor allowing both left and right to be defined
-  KeyMap(const std::string &name);
+  KeyMap(const std::uint8_t &name);
 
   // Function to create the keymap array from the constructor
   void create_keymaps(uint8_t keys[NUM_ROWS][NUM_COLUMNS][NUM_LAYERS]);

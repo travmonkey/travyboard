@@ -63,7 +63,7 @@ private:
   constexpr static uint8_t RIGHT_COLUMN_PINS[3] = {11, 12, 13};
 
 public:
-  KeyBoard(const std::string &name);
+  KeyBoard(const std::int8_t &name);
   void scan_buttons(void);
   Keys scan_pins(void);
 };

@@ -46,12 +46,17 @@ enum {
   BLINK_SUSPENDED = 2500,  // device is suspended
 };
 
+enum {
+  LEFT = 0,
+  RIGHT = 1
+};
+
 // Blink pattern
 static uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
 
 void led_blinking_task(void); // define function prototype
 
-KeyBoard keyboard("right"); // create right keyboard object
+KeyBoard keyboard(RIGHT); // create right keyboard object
 
 // Create rotary encoders
 RotaryEncoder horizontal_encoder(9, 8, 7);
@@ -95,12 +100,12 @@ int main(void) {
 
     // Task to manage the blinking of the onboard LED
     led_blinking_task();
-    // keyboard.scan_buttons();
+    keyboard.scan_buttons();
     int encoder_position = horizontal_encoder.get_position();
     if (encoder_position > 0) {
-      send_mouse_report(0, 5);
+      send_mouse_report(0, -15);
     } else if (encoder_position < 0) {
-      send_mouse_report(0, -5);
+      send_mouse_report(0, 15);
     }
     horizontal_encoder.reset_position();
   }

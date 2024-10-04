@@ -7,10 +7,12 @@
 #include "keymap.hpp"
 #include "pico/time.h"
 #include "usb_descriptors.h"
-#include <cstdint>
 
-KeyMap left_keymap("left");
-KeyMap right_keymap("right");
+#define LEFT 0
+#define RIGHT 1
+
+KeyMap left_keymap(LEFT);
+KeyMap right_keymap(RIGHT);
 
 // Variable to hold keys ready for keypress send
 static uint8_t staged_keys[6]; 
@@ -21,8 +23,8 @@ static int total_keys; // Store total amount of keys presses
 static bool left_layer = false; // Store if left layer key is pressed
 static bool right_layer = false; // Store if right layer key is pressed
 
-KeyBoard::KeyBoard(const std::string &name) {
-  if (name == "right") {
+KeyBoard::KeyBoard(const std::int8_t &name) {
+  if (name == RIGHT) {
     // Initialize right half of keyboard
     // Initialize the row pins as the output
     for (uint8_t PIN : RIGHT_ROW_PINS) {
@@ -35,7 +37,7 @@ KeyBoard::KeyBoard(const std::string &name) {
       gpio_set_dir(PIN, GPIO_IN);
       gpio_pull_down(PIN);
     }
-  } else if (name == "left") {
+  } else if (name == LEFT) {
     // Initialize left half of keyboard
     // Initialize the row pins as the output
     for (uint8_t PIN : LEFT_ROW_PINS) {
