@@ -12,6 +12,8 @@ public:
   void listen();
 
 private:
+  volatile uint32_t last_interrupt_time = 0;
+
   const uint ENCODER_CLK;
   const uint ENCODER_DT;
   const uint ENCODER_SW;

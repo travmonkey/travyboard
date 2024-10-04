@@ -8,6 +8,8 @@
 #include "usb_descriptors.h"
 #include <cstdint>
 
+#define DEBOUNCE_DELAY 5
+
 RotaryEncoder::RotaryEncoder(uint clk, uint dt, uint sw)
     : ENCODER_CLK(clk), ENCODER_DT(dt), ENCODER_SW(sw) {
 
@@ -28,9 +30,10 @@ RotaryEncoder::RotaryEncoder(uint clk, uint dt, uint sw)
   gpio_disable_pulls(ENCODER_SW);
 
   // Initialize callback handling
-  gpio_set_irq_enabled_with_callback(ENCODER_CLK,
-                                     GPIO_IRQ_EDGE_FALL | GPIO_IRQ_EDGE_RISE,
-                                     true, &RotaryEncoder::gpio_isr_handler);
+  gpio_set_irq_enabled_with_callback(ENCODER_CLK, GPIO_IRQ_EDGE_FALL, true,
+                                     &RotaryEncoder::gpio_isr_handler);
+  gpio_set_irq_enabled(ENCODER_SW, GPIO_IRQ_EDGE_FALL, true);
+  gpio_set_irq_enabled(ENCODER_DT, GPIO_IRQ_EDGE_FALL, true);
 };
 
 RotaryEncoder *RotaryEncoder::instance = nullptr;
@@ -44,6 +47,13 @@ void RotaryEncoder::gpio_isr_handler(uint gpio, uint32_t events) {
 
 // Handle rotary encoder interrupts
 void RotaryEncoder::handle_interrupt(uint gpio, uint32_t events) {
+  uint8_t current_time = board_millis();
+
+  if (current_time - last_interrupt_time < DEBOUNCE_DELAY) {
+    return; // ignore this interrupt from debouncing
+  };
+  last_interrupt_time = current_time; // update last interrupt time
+  
   static int last_encoded = 0;
   static const int enc_states[] = {0,  -1, 1, 0, 1, 0, 0,  -1,
                                    -1, 0,  0, 1, 0, 1, -1, 0};
