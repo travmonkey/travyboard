@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 working_dir=$(pwd)
 echo "Attempting to build the project"
