@@ -23,7 +23,7 @@
  *
  */
 
-#include "bsp/board.h"
+#include "bsp/board_api.h"
 #include "class/hid/hid.h"
 #include "class/hid/hid_device.h"
 #include "hardware/gpio.h"
